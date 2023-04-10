@@ -1,4 +1,4 @@
-package com.example.mypets.ui.main
+
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -15,9 +15,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.mypets.domain.model.User
-import com.example.mypets.ui.mini_components.*
 import com.example.mypets.R
 import com.example.mypets.data.local.DataStoreManager
+import com.example.mypets.ui.*
 import kotlinx.coroutines.launch
 
 @Preview
@@ -45,10 +45,11 @@ fun ProfileScreen() {
     if (isLoading){
         Column(modifier = Modifier.fillMaxSize()) {
             TitleApp()
-            Image(painter = painterResource(id = R.drawable.chico1), contentDescription = "User image", modifier = Modifier
+            Image(painter = painterResource(id = R.drawable.profile_photo), contentDescription = "User image", modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
                 .size(100.dp), Alignment.Center ,contentScale = ContentScale.Fit )
+
 
             Text(text = "Username: " + userState.name, modifier = Modifier
                 .fillMaxWidth()
@@ -64,6 +65,8 @@ fun ProfileScreen() {
 
 
 }
+
+
 //suspend fun getUser(token: String?): User = withContext(Dispatchers.IO) {
 //    val service = ShelterServiceSecurity(token).getRetrofit().create(ShelterDAO::class.java)
 //    try {

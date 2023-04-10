@@ -1,10 +1,10 @@
 package com.example.mypets.ui.navigation
 
+import ProfileScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.mypets.ui.main.ProfileScreen
 import com.example.mypets.ui.pet.PetsScreen
 
 @Composable

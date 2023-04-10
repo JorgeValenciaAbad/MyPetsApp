@@ -20,9 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.mypets.data.local.DataStoreManager
 import com.example.mypets.domain.model.Pets
-import com.example.mypets.ui.mini_components.ItemList
-import com.example.mypets.ui.mini_components.ItemType
-import com.example.mypets.ui.mini_components.LoadingScreen
+import com.example.mypets.ui.*
 import kotlinx.coroutines.launch
 
 

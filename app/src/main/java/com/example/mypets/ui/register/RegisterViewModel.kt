@@ -1,13 +1,20 @@
 package com.example.mypets.ui.register
 
-import androidx.compose.animation.core.estimateAnimationDurationMillis
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.mypets.data.MyPetsRepositoryImpl
+import com.example.mypets.util.Constants
+import com.example.mypets.util.Functions
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel:ViewModel() {
+class RegisterViewModel @Inject constructor( repository: MyPetsRepositoryImpl) :ViewModel() {
+
+
 
     private val _username = MutableLiveData<String>()
     val username: LiveData<String> = _username
@@ -15,24 +22,20 @@ class RegisterViewModel:ViewModel() {
     private val _password = MutableLiveData<String>()
     val password: LiveData<String> = _password
 
-    private val _confirmPassword = MutableLiveData<String>()
-    val confirmPassword: LiveData<String> = _confirmPassword
-
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> = _email
 
-    private val _registerEnable = MutableLiveData<String>()
-    val registerEnable: LiveData<String> = _registerEnable
+    private val _registerEnable = MutableLiveData<Boolean>()
+    val registerEnable: LiveData<Boolean> = _registerEnable
 
-    fun onLoginChanged(username: String, password: String, confirmPassword: String, email: String){
+    fun onLoginChanged(username: String, password: String, email: String){
         _username.value = username
         _password.value = password
-        _confirmPassword.value = confirmPassword
         _email.value = email
+        _registerEnable.value = Functions.isValidEmail(email) && Functions.isValidPassword(password) && Functions.isValidUser(username)
 
     }
 
-    private fun isValidUser(username: String): Boolean = username.length > 1
-    private fun isValidPassword(pass: String): Boolean = pass.length > 6
+
 
 }
