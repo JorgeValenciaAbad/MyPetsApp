@@ -14,10 +14,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -42,11 +44,12 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
 
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LogIn(navController: NavController, viewModel: LoginViewModel) {
     val email: String by viewModel.email.observeAsState(initial = "")
     val password: String by viewModel.pass.observeAsState(initial = "")
-    val focusRequester = remember { FocusRequester() }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Card(
         modifier = Modifier
@@ -58,8 +61,8 @@ fun LogIn(navController: NavController, viewModel: LoginViewModel) {
     ) {
         Column{
             Logo()
-            UserEmail(focusRequester, email) { viewModel.onLogInChanged(it, password) }
-            UserPass(focusRequester,password) { viewModel.onLogInChanged(email, it) }
+            UserEmail(keyboardController, email) { viewModel.onLogInChanged(it, password) }
+            UserPass(keyboardController,password) { viewModel.onLogInChanged(email, it) }
             LoginButton(viewModel)
             ButtonToRegister(navController)
         }

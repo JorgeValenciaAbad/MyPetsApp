@@ -14,10 +14,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -28,6 +30,7 @@ import com.example.mypets.ui.navigation.RootDestinations
 import com.example.mypets.ui.theme.MyPetsTheme
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = hiltViewModel()) {
     MyPetsTheme(isLogin = true) {
@@ -45,15 +48,14 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                 val email: String by viewModel.email.observeAsState(initial = "")
                 val password: String by viewModel.password.observeAsState(initial = "")
                 val registerEnable: Boolean by viewModel.registerEnable.observeAsState(initial = false)
-                val focusRequester = remember { FocusRequester() }
-                val focusRequester2 = remember { FocusRequester() }
+                val keyboardController = LocalSoftwareKeyboardController.current
                 Column {
 
                     Logo()
 
-                    UserName(focusRequester2,username) { viewModel.onLoginChanged(it, password, email) }
+                    UserName(keyboardController,username) { viewModel.onLoginChanged(it, password, email) }
 
-                    UserEmail(focusRequester, email) {
+                    UserEmail(keyboardController, email) {
                         viewModel.onLoginChanged(
                             username,
                             password,
@@ -61,7 +63,7 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                         )
                     }
 
-                    UserPass(focusRequester, password) {
+                    UserPass( keyboardController, password) {
                         viewModel.onLoginChanged(
                             username,
                             it,
