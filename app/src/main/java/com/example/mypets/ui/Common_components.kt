@@ -73,7 +73,7 @@ fun ItemList(navController: NavController,pet: Pet) {
             defaultElevation = 4.dp
         ),
         modifier = Modifier.padding(10.dp),
-        onClick = { navController.navigate(Destination.Details.createRoute(pet))}) {
+        onClick = { navController.navigate(Destination.Details.createRoute(pet.pet_id))}) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -113,6 +113,53 @@ fun ItemList(navController: NavController,pet: Pet) {
     }
 }
 
+
+@Composable
+fun UserPetItem(pet: Pet) {
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        ),
+        modifier = Modifier.padding(20.dp),
+        ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically,
+
+            ) {
+
+            when (pet.type) {
+                stringResource(R.string.dog) -> {
+                    ImagePet(id = R.drawable.perro)
+                }
+                stringResource(R.string.cat) -> {
+                    ImagePet(id = R.drawable.gato)
+                }
+                stringResource(R.string.bird) -> {
+                    ImagePet(id = R.drawable.pajaro)
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp), Arrangement.Center
+            ) {
+
+                Text(
+                    text = pet.name.uppercase(Locale.getDefault()),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+                Text(text = "Age: " + pet.age.toString() + "m old.")
+            }
+
+
+        }
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemType(type: String) {
