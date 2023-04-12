@@ -2,13 +2,13 @@ package com.example.mypets.domain.model
 
 import java.io.Serializable
 
-class Pets: Serializable {
-    var pet_id :Int
-    var name : String
-    var type :String
-    var age: Int
-    var description: String
-    var reserva:Boolean
+class Pet: Serializable {
+    var pet_id :Int = 0
+    var name : String = ""
+    var type :String = ""
+    var age: Int = 0
+    var description: String = ""
+    var reserva:Boolean = false
 
     constructor(
         pet_id: Int,
@@ -39,6 +39,9 @@ class Pets: Serializable {
         this.description = description
         this.reserva = reserva
     }
+
+    constructor()
+
     override fun toString(): String {
         return "Pets(id=$pet_id, name='$name', type='$type', age=$age, sumary='$description', reserva=$reserva)"
     }

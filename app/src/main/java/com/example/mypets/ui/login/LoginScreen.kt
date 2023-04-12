@@ -22,7 +22,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.mypets.ui.*
-import com.example.mypets.ui.navigation.RootDestinations
+import com.example.mypets.ui.navigation.Destination
 import com.example.mypets.ui.theme.MyPetsTheme
 
 
@@ -81,7 +81,7 @@ fun LoginButton(viewModel: LoginViewModel, navController: NavController) {
                 .fillMaxWidth()
                 .padding(vertical = 25.dp, horizontal = 100.dp)
                 .clip(RoundedCornerShape(10.dp)),
-            onClick = {navController.navigate(RootDestinations.MainScreen.route)},
+            onClick = {navController.navigate(Destination.MainScreen.route)},
             enabled = hashLogin
         ) {
             Text(text = "Log In")
@@ -97,7 +97,7 @@ fun ButtonToRegister(navController: NavController) {
             .wrapContentHeight(),
     ) {
         ClickableText(text = AnnotatedString("Register"),
-            onClick = { navController.navigate(RootDestinations.RegisterScreen.route)},
+            onClick = { navController.navigate(Destination.RegisterScreen.route)},
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()

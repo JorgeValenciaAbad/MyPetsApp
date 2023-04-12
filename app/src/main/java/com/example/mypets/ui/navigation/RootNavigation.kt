@@ -14,17 +14,17 @@ import com.example.mypets.ui.register.RegisterScreen
 fun NavigationHost(navController: NavHostController) {
 
 
-    NavHost(navController = navController, startDestination = RootDestinations.MainScreen.route) {
-        composable(route = RootDestinations.LoginScreen.route) {
+    NavHost(navController = navController, startDestination = Destination.LoginScreen.route) {
+        composable(route = Destination.LoginScreen.route) {
            LoginScreen(
                 navController = navController,
                 viewModel = LoginViewModel()
             )
         }
-        composable(route = RootDestinations.RegisterScreen.route){
+        composable(route = Destination.RegisterScreen.route){
             RegisterScreen(navController)
         }
-        composable(route = RootDestinations.MainScreen.route) {
+        composable(route = Destination.MainScreen.route) {
            MainScreen()
         }
     }

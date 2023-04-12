@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.mypets.R
-import com.example.mypets.domain.model.Pets
+import com.example.mypets.domain.model.Pet
 import com.example.mypets.ui.navigation.Destination
 import com.example.mypets.ui.theme.md_theme_dark_secondaryContainer
 import com.example.mypets.ui.theme.md_theme_light_secondaryContainer
@@ -67,13 +67,13 @@ fun ImagePet(id: Int) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemList(pet: Pets) {
+fun ItemList(navController: NavController,pet: Pet) {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
         ),
         modifier = Modifier.padding(10.dp),
-        onClick = { }) {
+        onClick = { navController.navigate(Destination.Details.createRoute(pet))}) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -274,15 +274,21 @@ fun Header(navController: NavController, code: Int) {
                     )
                 }
 
-                IconButton(onClick = { navController.navigate(Destination.Profile.route) }, modifier = Modifier.size(100.dp)) {
-                    Column( horizontalAlignment = Alignment.CenterHorizontally) {
+                IconButton(
+                    onClick = { navController.navigate(Destination.Profile.route) },
+                    modifier = Modifier.size(100.dp)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(
                             imageVector = Icons.Filled.Person,
-                            contentDescription = "ArrowBack",
+                            contentDescription = "Profile",
                             tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
                             modifier = Modifier.size(30.dp)
                         )
-                        Text(text = "Profile", color = if (isSystemInDarkTheme()) Color.White else Color.Black)
+                        Text(
+                            text = "Profile",
+                            color = if (isSystemInDarkTheme()) Color.White else Color.Black
+                        )
                     }
 
                 }
@@ -294,10 +300,37 @@ fun Header(navController: NavController, code: Int) {
                     fontSize = 36.sp,
                     color = if (isSystemInDarkTheme()) Color.White else Color.Black
                 )
-                IconButton(onClick = { }) {
+                IconButton(
+                    onClick = { },
+                    modifier = Modifier.size(100.dp)
+                ) {
                     Icon(
                         imageVector = Icons.Filled.ExitToApp,
+                        contentDescription = "Logout",
+                        tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
+            3 -> {
+                IconButton(
+                    onClick = { },
+                    modifier = Modifier.size(100.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "ArrowBack",
+                        tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+                IconButton(
+                    onClick = { },
+                    modifier = Modifier.size(100.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Share,
+                        contentDescription = "SharePet",
                         tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
                         modifier = Modifier.size(30.dp)
                     )

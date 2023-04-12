@@ -12,12 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.AnnotatedString
@@ -26,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mypets.ui.*
-import com.example.mypets.ui.navigation.RootDestinations
+import com.example.mypets.ui.navigation.Destination
 import com.example.mypets.ui.theme.MyPetsTheme
 
 
@@ -71,7 +69,7 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                         )
                     }
 
-                    RegisterButton(registerEnable, navController)
+                    RegisterButton(registerEnable)
 
                     ButtonToLogin(navController)
 
@@ -83,7 +81,7 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
 }
 
 @Composable
-fun RegisterButton(registerEnable: Boolean, navController: NavController) {
+fun RegisterButton(registerEnable: Boolean) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -113,7 +111,7 @@ fun ButtonToLogin(navController: NavController) {
     ) {
         ClickableText(
             text = AnnotatedString("Log In"),
-            onClick = { navController.navigate(RootDestinations.LoginScreen.route) },
+            onClick = { navController.navigate(Destination.LoginScreen.route) },
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
