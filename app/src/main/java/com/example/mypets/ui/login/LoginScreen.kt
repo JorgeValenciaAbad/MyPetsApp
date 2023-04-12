@@ -1,8 +1,6 @@
 package com.example.mypets.ui.login
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.gestures.ScrollableState
-import androidx.compose.foundation.gestures.scrollable
+
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.AnnotatedString
@@ -29,7 +26,6 @@ import com.example.mypets.ui.navigation.RootDestinations
 import com.example.mypets.ui.theme.MyPetsTheme
 
 
-@SuppressLint("SuspiciousIndentation")
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
 
@@ -63,7 +59,7 @@ fun LogIn(navController: NavController, viewModel: LoginViewModel) {
             Logo()
             UserEmail(keyboardController, email) { viewModel.onLogInChanged(it, password) }
             UserPass(keyboardController,password) { viewModel.onLogInChanged(email, it) }
-            LoginButton(viewModel)
+            LoginButton(viewModel, navController)
             ButtonToRegister(navController)
         }
     }
@@ -71,7 +67,7 @@ fun LogIn(navController: NavController, viewModel: LoginViewModel) {
 
 
 @Composable
-fun LoginButton(viewModel: LoginViewModel) {
+fun LoginButton(viewModel: LoginViewModel, navController: NavController) {
 
     val hashLogin by viewModel.loginEnable.observeAsState(initial = false)
     Box(
@@ -85,7 +81,7 @@ fun LoginButton(viewModel: LoginViewModel) {
                 .fillMaxWidth()
                 .padding(vertical = 25.dp, horizontal = 100.dp)
                 .clip(RoundedCornerShape(10.dp)),
-            onClick = {},
+            onClick = {navController.navigate(RootDestinations.MainScreen.route)},
             enabled = hashLogin
         ) {
             Text(text = "Log In")

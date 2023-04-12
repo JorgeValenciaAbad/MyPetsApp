@@ -7,15 +7,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -29,14 +28,20 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.mypets.R
 import com.example.mypets.domain.model.Pets
+import com.example.mypets.ui.navigation.Destination
+import com.example.mypets.ui.theme.md_theme_dark_secondaryContainer
+import com.example.mypets.ui.theme.md_theme_light_secondaryContainer
 import java.util.*
 
 @Composable
-fun Logo(){
+fun Logo() {
     Image(
-        painter =  if (isSystemInDarkTheme())painterResource(id = R.drawable.logo_dark) else painterResource(id = R.drawable.logo_light),
+        painter = if (isSystemInDarkTheme()) painterResource(id = R.drawable.logo_dark) else painterResource(
+            id = R.drawable.logo_light
+        ),
         contentDescription = "Logo",
         contentScale = ContentScale.Fit,
         modifier = Modifier
@@ -46,9 +51,8 @@ fun Logo(){
     )
 }
 
-
 @Composable
-fun ImagePet(id: Int){
+fun ImagePet(id: Int) {
     Image(
         painter = painterResource(id = id),
         contentDescription = stringResource(R.string.dog),
@@ -68,13 +72,14 @@ fun ItemList(pet: Pets) {
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
         ),
+        modifier = Modifier.padding(10.dp),
         onClick = { }) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(20.dp),
+                .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment =  Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically,
 
             ) {
 
@@ -89,12 +94,18 @@ fun ItemList(pet: Pets) {
                     ImagePet(id = R.drawable.pajaro)
                 }
             }
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp), Arrangement.Center){
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp), Arrangement.Center
+            ) {
 
-                Text(text = pet.name.uppercase(Locale.getDefault()), fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
-                Text(text = "Age: "+ pet.age.toString()+"m old.")
+                Text(
+                    text = pet.name.uppercase(Locale.getDefault()),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+                Text(text = "Age: " + pet.age.toString() + "m old.")
             }
 
 
@@ -104,11 +115,15 @@ fun ItemList(pet: Pets) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemType(type : String){
+fun ItemType(type: String) {
     Card(
         modifier = Modifier
             .padding(10.dp),
-        onClick = {  }) {
+        onClick = { },
+        colors = CardDefaults.cardColors(
+            containerColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer
+        )
+    ) {
         Text(text = type, modifier = Modifier.padding(8.dp))
     }
 }
@@ -122,15 +137,25 @@ fun LoadingScreen() {
 
 
 @Composable
-fun TitleApp(){
-    Text(text = "CUDDLE BUDDIES", modifier = Modifier
-        .fillMaxWidth()
-        .padding(20.dp), fontFamily = FontFamily.Serif, fontSize = 24.sp, textAlign = TextAlign.Center)
+fun TitleApp() {
+    Text(
+        text = "CUDDLE BUDDIES",
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
+        fontFamily = FontFamily.Serif,
+        fontSize = 24.sp,
+        textAlign = TextAlign.Center
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun UserName (keyboardController: SoftwareKeyboardController?, username: String, onTextFieldChanged: (String) -> Unit){
+fun UserName(
+    keyboardController: SoftwareKeyboardController?,
+    username: String,
+    onTextFieldChanged: (String) -> Unit
+) {
     TextField(
         value = username,
         onValueChange = onTextFieldChanged,
@@ -141,7 +166,7 @@ fun UserName (keyboardController: SoftwareKeyboardController?, username: String,
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
         singleLine = true,
-        leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "User")},
+        leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "User") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
@@ -149,7 +174,11 @@ fun UserName (keyboardController: SoftwareKeyboardController?, username: String,
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun UserEmail (keyboardController: SoftwareKeyboardController?,email: String, onTextFieldChanged: (String) -> Unit){
+fun UserEmail(
+    keyboardController: SoftwareKeyboardController?,
+    email: String,
+    onTextFieldChanged: (String) -> Unit
+) {
     TextField(
         value = email,
         onValueChange = onTextFieldChanged,
@@ -159,17 +188,23 @@ fun UserEmail (keyboardController: SoftwareKeyboardController?,email: String, on
             .fillMaxWidth()
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
-        leadingIcon = { Icon(imageVector = Icons.Filled.Email, contentDescription = "email")},
+        leadingIcon = { Icon(imageVector = Icons.Filled.Email, contentDescription = "email") },
         singleLine = true,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Done),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Done
+        ),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun UserPass(keyboardController: SoftwareKeyboardController?, password: String, onTextFieldChanged: (String) -> Unit){
-
+fun UserPass(
+    keyboardController: SoftwareKeyboardController?,
+    password: String,
+    onTextFieldChanged: (String) -> Unit
+) {
 
 
     var isPasswordVisible by remember { mutableStateOf(false) }
@@ -185,7 +220,7 @@ fun UserPass(keyboardController: SoftwareKeyboardController?, password: String, 
 
         singleLine = true,
         label = { Text(text = "Password") },
-        leadingIcon = { Icon(imageVector = Icons.Filled.Lock, contentDescription = "Pass")},
+        leadingIcon = { Icon(imageVector = Icons.Filled.Lock, contentDescription = "Pass") },
         visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
@@ -202,7 +237,72 @@ fun UserPass(keyboardController: SoftwareKeyboardController?, password: String, 
                 }
             }
         },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = ImeAction.Done
+        ),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
+}
+
+@Composable
+fun Header(navController: NavController, code: Int) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+
+
+        when (code) {
+
+            1 -> {
+                Column() {
+                    Text(
+                        text = "Find your favorite",
+                        fontWeight = FontWeight.Light,
+                        fontSize = 24.sp,
+                        color = if (isSystemInDarkTheme()) Color.White else Color.Black
+                    )
+                    Text(
+                        text = "Pet to Adopt!",
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 36.sp,
+                        color = if (isSystemInDarkTheme()) Color.White else Color.Black
+                    )
+                }
+
+                IconButton(onClick = { navController.navigate(Destination.Profile.route) }, modifier = Modifier.size(100.dp)) {
+                    Column( horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = "ArrowBack",
+                            tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                            modifier = Modifier.size(30.dp)
+                        )
+                        Text(text = "Profile", color = if (isSystemInDarkTheme()) Color.White else Color.Black)
+                    }
+
+                }
+            }
+            2 -> {
+                Text(
+                    text = "Profile",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 36.sp,
+                    color = if (isSystemInDarkTheme()) Color.White else Color.Black
+                )
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Filled.ExitToApp,
+                        contentDescription = "ArrowBack",
+                        tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                        modifier = Modifier.size(30.dp)
+                    )
+                }
+            }
+        }
+    }
 }
