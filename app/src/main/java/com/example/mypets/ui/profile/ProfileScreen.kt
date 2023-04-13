@@ -3,6 +3,7 @@ package com.example.mypets.ui.profile
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -24,17 +25,25 @@ import com.example.mypets.ui.UserPetItem
 @Composable
 fun ProfileScreen(navController: NavHostController) {
 
-    val userState  =  remember {
-        mutableStateOf(User("Jorge","1234","jorge@gmail.com",1))
-    }
-    Column(Modifier.fillMaxSize()) {
+
+    Column {
         Header(navController, 2)
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-            ImageUser()
-           DataUser(user = userState.value)
+        LazyColumn(Modifier.fillMaxSize()) {
+            item{
+                UserProfile()
+                UserPetsList()}
 
         }
-        UserPetsList()
+    }
+
+}
+
+@Composable
+fun UserProfile(){
+    val user =  remember { mutableStateOf(User("Jorge","1234","jorge@gmail.com",1)) }
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        ImageUser()
+        DataUser(user =user.value)
     }
 }
 @Composable
