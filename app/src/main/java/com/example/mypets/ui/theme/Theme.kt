@@ -85,7 +85,7 @@ private val DarkColors = darkColorScheme(
 fun MyPetsTheme(
     isLogin:Boolean,
   darkTheme: Boolean = isSystemInDarkTheme(),
-  content: @Composable() () -> Unit
+  content: @Composable () -> Unit
 ) {
   val colors = if (!darkTheme) {
     LightColors
@@ -109,7 +109,7 @@ fun MyPetsTheme(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
                 window.isNavigationBarContrastEnforced = false
             }
-            insets?.isAppearanceLightNavigationBars = !darkTheme
+            insets.isAppearanceLightNavigationBars = !darkTheme
         }
     }
   MaterialTheme(
