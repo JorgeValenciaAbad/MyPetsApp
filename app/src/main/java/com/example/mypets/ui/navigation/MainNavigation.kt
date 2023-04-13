@@ -11,7 +11,7 @@ import com.example.mypets.domain.model.Pet
 import com.example.mypets.ui.details.DetailsScreen
 import com.example.mypets.ui.pet.PetsScreen
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
 @Composable
 fun NavigationHostMain(navController: NavHostController) {
 
@@ -27,9 +27,9 @@ fun NavigationHostMain(navController: NavHostController) {
             val pet = it.arguments?.getInt("`pet_id")
             if (pet!= null){
                 DetailsScreen(navController = navController, pet!! )
+            }else {
+                PetsScreen(navController = navController)
             }
-            PetsScreen(navController = navController)
-
         }
     }
 }

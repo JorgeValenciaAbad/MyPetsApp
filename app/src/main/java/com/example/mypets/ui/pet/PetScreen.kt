@@ -15,12 +15,12 @@ import com.example.mypets.ui.*
 @Composable
 fun PetsScreen(navController: NavController) {
     val scrollState = rememberScrollState()
-    Box(modifier = Modifier.fillMaxWidth()){
+    Column(verticalArrangement = Arrangement.SpaceBetween){
         Header(navController,1)
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 120.dp, horizontal = 20.dp)
+                .padding( 20.dp)
                 .verticalScroll(scrollState)
         ) {
             FilterAdoption()

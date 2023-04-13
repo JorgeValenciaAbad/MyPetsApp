@@ -67,16 +67,64 @@ fun ImagePet(id: Int) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemList(navController: NavController,pet: Pet) {
+fun ItemList(navController: NavController, pet: Pet) {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
         ),
         modifier = Modifier.padding(10.dp),
-        onClick = { navController.navigate(Destination.Details.createRoute(pet))}) {
+        onClick = { navController.navigate(Destination.Details.createRoute(pet.pet_id)) }) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(10.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalAlignment = Alignment.CenterVertically,
+
+            ) {
+
+            when (pet.type) {
+                stringResource(R.string.dog) -> {
+                    ImagePet(id = R.drawable.perro)
+                }
+                stringResource(R.string.cat) -> {
+                    ImagePet(id = R.drawable.gato)
+                }
+                stringResource(R.string.bird) -> {
+                    ImagePet(id = R.drawable.pajaro)
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp), Arrangement.Center
+            ) {
+
+                Text(
+                    text = pet.name.uppercase(Locale.getDefault()),
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+                Text(text = "Age: " + pet.age.toString() + "m old.")
+            }
+
+
+        }
+    }
+}
+
+
+@Composable
+fun UserPetItem(pet: Pet) {
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        ),
+        modifier = Modifier.padding(20.dp),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
                 .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceAround,
             verticalAlignment = Alignment.CenterVertically,
@@ -133,20 +181,6 @@ fun LoadingScreen() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         CircularProgressIndicator()
     }
-}
-
-
-@Composable
-fun TitleApp() {
-    Text(
-        text = "CUDDLE BUDDIES",
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
-        fontFamily = FontFamily.Serif,
-        fontSize = 24.sp,
-        textAlign = TextAlign.Center
-    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -304,36 +338,57 @@ fun Header(navController: NavController, code: Int) {
                     onClick = { },
                     modifier = Modifier.size(100.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.ExitToApp,
-                        contentDescription = "Logout",
-                        tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                        modifier = Modifier.size(30.dp)
-                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Filled.ExitToApp,
+                            contentDescription = "Logout",
+                            tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                            modifier = Modifier.size(30.dp)
+                        )
+                        Text(
+                            text = "Logout",
+                            color = if (isSystemInDarkTheme()) Color.White else Color.Black
+                        )
+                    }
+
                 }
             }
             3 -> {
+
                 IconButton(
                     onClick = { },
                     modifier = Modifier.size(100.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = "ArrowBack",
-                        tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                        modifier = Modifier.size(30.dp)
-                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "ArrowBack",
+                            tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                            modifier = Modifier.size(30.dp)
+                        )
+
+                        Text(
+                            text = "Back",
+                            color = if (isSystemInDarkTheme()) Color.White else Color.Black
+                        )
+                    }
                 }
                 IconButton(
                     onClick = { },
                     modifier = Modifier.size(100.dp)
                 ) {
-                    Icon(
-                        imageVector = Icons.Filled.Share,
-                        contentDescription = "SharePet",
-                        tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                        modifier = Modifier.size(30.dp)
-                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Icon(
+                            imageVector = Icons.Filled.Share,
+                            contentDescription = "SharePet",
+                            tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                            modifier = Modifier.size(30.dp)
+                        )
+                        Text(
+                            text = "Share",
+                            color = if (isSystemInDarkTheme()) Color.White else Color.Black
+                        )
+                    }
                 }
             }
         }
