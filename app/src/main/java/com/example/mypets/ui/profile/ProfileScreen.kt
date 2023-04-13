@@ -37,6 +37,7 @@ fun ProfileScreen(navController: NavHostController) {
            DataUser(user = userState.value)
 
         }
+        UserPetsList()
     }
 }
 @Composable
