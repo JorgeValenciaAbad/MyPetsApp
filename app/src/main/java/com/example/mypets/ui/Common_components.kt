@@ -19,7 +19,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -279,118 +278,108 @@ fun UserPass(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Header(navController: NavController, code: Int) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(20.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-    ) {
+
+    when (code) {
+
+        1 -> {
+            TopAppBar(title = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(text = "My Pets")
+                }
+
+            },
+                actions = {
+                    IconButton(
+                        onClick = { navController.navigate(Destination.Profile.route) },
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                imageVector = Icons.Filled.Person,
+                                contentDescription = "Profile",
+                                tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                            )
+                        }
+
+                    }
+                })
 
 
-        when (code) {
+        }
+        2 -> {
 
-            1 -> {
-                Column() {
+
+            TopAppBar(
+                navigationIcon = { ArrowBackIcon()},
+                actions = { LogoutIcon()},
+                title = {
                     Text(
-                        text = "Find your favorite",
-                        fontWeight = FontWeight.Light,
-                        fontSize = 24.sp,
-                        color = if (isSystemInDarkTheme()) Color.White else Color.Black
-                    )
-                    Text(
-                        text = "Pet to Adopt!",
+                        text = "Profile",
                         fontWeight = FontWeight.ExtraBold,
-                        fontSize = 36.sp,
+                        fontSize = 26.sp,
                         color = if (isSystemInDarkTheme()) Color.White else Color.Black
                     )
-                }
+                })
 
-                IconButton(
-                    onClick = { navController.navigate(Destination.Profile.route) },
-                    modifier = Modifier.size(100.dp)
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Filled.Person,
-                            contentDescription = "Profile",
-                            tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                            modifier = Modifier.size(30.dp)
-                        )
-                        Text(
-                            text = "Profile",
-                            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-                        )
-                    }
 
-                }
-            }
-            2 -> {
-                Text(
-                    text = "Profile",
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 36.sp,
-                    color = if (isSystemInDarkTheme()) Color.White else Color.Black
-                )
-                IconButton(
-                    onClick = { },
-                    modifier = Modifier.size(100.dp)
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Filled.ExitToApp,
-                            contentDescription = "Logout",
-                            tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                            modifier = Modifier.size(30.dp)
-                        )
-                        Text(
-                            text = "Logout",
-                            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-                        )
-                    }
-
-                }
-            }
-            3 -> {
-
-                IconButton(
-                    onClick = { },
-                    modifier = Modifier.size(100.dp)
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "ArrowBack",
-                            tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                            modifier = Modifier.size(30.dp)
-                        )
-
-                        Text(
-                            text = "Back",
-                            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-                        )
-                    }
-                }
-                IconButton(
-                    onClick = { },
-                    modifier = Modifier.size(100.dp)
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Filled.Share,
-                            contentDescription = "SharePet",
-                            tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
-                            modifier = Modifier.size(30.dp)
-                        )
-                        Text(
-                            text = "Share",
-                            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-                        )
-                    }
-                }
-            }
+        }
+        3 -> {
+            TopAppBar(
+                navigationIcon = { ArrowBackIcon()},
+                actions = { SharedIcon()},
+                title = {})
         }
     }
 }
+
+@Composable
+fun ArrowBackIcon(){
+    IconButton(
+        onClick = { },
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "ArrowBack",
+                tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                modifier = Modifier.size(30.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun SharedIcon(){
+    IconButton(
+        onClick = { },
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(
+                imageVector = Icons.Filled.Share,
+                contentDescription = "SharePet",
+                tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                modifier = Modifier.size(30.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun LogoutIcon(){
+    IconButton(
+        onClick = { },
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Icon(
+                imageVector = Icons.Filled.ExitToApp,
+                contentDescription = "Logout",
+                tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                modifier = Modifier.size(30.dp)
+            )
+        }
+
+    }
+}
+
