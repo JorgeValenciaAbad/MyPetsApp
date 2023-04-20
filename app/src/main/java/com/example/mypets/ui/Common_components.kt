@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -31,8 +32,6 @@ import androidx.navigation.NavController
 import com.example.mypets.R
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.ui.navigation.Destination
-import com.example.mypets.ui.theme.md_theme_dark_secondaryContainer
-import com.example.mypets.ui.theme.md_theme_light_secondaryContainer
 import java.util.*
 
 @Composable
@@ -118,8 +117,7 @@ fun UserPetItem(pet: Pet) {
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
-        ),
-        modifier = Modifier.padding(20.dp),
+        )
     ) {
         Row(
             modifier = Modifier
@@ -150,9 +148,13 @@ fun UserPetItem(pet: Pet) {
                 Text(
                     text = pet.name.uppercase(Locale.getDefault()),
                     fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    color = if (isSystemInDarkTheme()) Color.White else Color.Black
                 )
-                Text(text = "Age: " + pet.age.toString() + "m old.")
+                Text(
+                    text = "Age: " + pet.age.toString() + "m old.",
+                    color = if (isSystemInDarkTheme()) Color.White else Color.Black
+                )
             }
 
 
@@ -168,10 +170,13 @@ fun ItemType(type: String) {
             .padding(10.dp),
         onClick = { },
         colors = CardDefaults.cardColors(
-            containerColor = if (!isSystemInDarkTheme()) md_theme_light_secondaryContainer else md_theme_dark_secondaryContainer
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer
         )
     ) {
-        Text(text = type, modifier = Modifier.padding(8.dp))
+        Text(
+            text = type,
+            modifier = Modifier.padding(8.dp)
+        )
     }
 }
 
