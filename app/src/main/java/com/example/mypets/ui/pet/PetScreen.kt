@@ -20,7 +20,6 @@ fun PetsScreen(navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding( 20.dp)
                 .verticalScroll(scrollState)
         ) {
             FilterAdoption()

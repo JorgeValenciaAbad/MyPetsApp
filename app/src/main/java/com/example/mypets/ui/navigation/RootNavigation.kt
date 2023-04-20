@@ -12,7 +12,6 @@ import com.example.mypets.ui.main.MainScreen
 import com.example.mypets.ui.register.RegisterScreen
 
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun NavigationHost(navController: NavHostController) {
 

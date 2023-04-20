@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
+import com.example.mypets.ui.main.MainScreen
 import com.example.mypets.ui.navigation.NavigationHost
 import com.example.mypets.ui.navigation.NavigationHostMain
 import com.example.mypets.ui.pet.PetsScreen
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
 
                     val navController = rememberNavController()
-                    NavigationHost(navController = navController)
+                    MainScreen()
 
 
 
