@@ -71,7 +71,7 @@ fun PetsAdoption(navController: NavController) {
 
 @Composable
 fun TitlePetsScreen(){
-    Column(Modifier.padding(horizontal = 20.dp)) {
+    Column(Modifier.padding(20.dp)) {
         Text(
             text = "Find your favorite",
             fontWeight = FontWeight.Light,

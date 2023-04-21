@@ -292,10 +292,14 @@ fun Header(navController: NavController, code: Int) {
         1 -> {
             TopAppBar(title = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "My Pets")
+                    Text(
+                        text = "My Pets",
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 26.sp,
+                    )
                 }
-
             },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
                 actions = {
                     IconButton(
                         onClick = { navController.navigate(Destination.Profile.route) },
@@ -304,7 +308,7 @@ fun Header(navController: NavController, code: Int) {
                             Icon(
                                 imageVector = Icons.Filled.Person,
                                 contentDescription = "Profile",
-                                tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                                tint =  MaterialTheme.colorScheme.surface,
                             )
                         }
 
@@ -319,12 +323,12 @@ fun Header(navController: NavController, code: Int) {
             TopAppBar(
                 navigationIcon = { ArrowBackIcon()},
                 actions = { LogoutIcon()},
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
                 title = {
                     Text(
                         text = "Profile",
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 26.sp,
-                        color = if (isSystemInDarkTheme()) Color.White else Color.Black
                     )
                 })
 
@@ -334,7 +338,8 @@ fun Header(navController: NavController, code: Int) {
             TopAppBar(
                 navigationIcon = { ArrowBackIcon()},
                 actions = { SharedIcon()},
-                title = {})
+                title = {},
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary))
         }
     }
 }
@@ -348,7 +353,6 @@ fun ArrowBackIcon(){
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "ArrowBack",
-                tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
                 modifier = Modifier.size(30.dp)
             )
         }
@@ -364,7 +368,7 @@ fun SharedIcon(){
             Icon(
                 imageVector = Icons.Filled.Share,
                 contentDescription = "SharePet",
-                tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                tint = MaterialTheme.colorScheme.surface,
                 modifier = Modifier.size(30.dp)
             )
         }
@@ -380,7 +384,7 @@ fun LogoutIcon(){
             Icon(
                 imageVector = Icons.Filled.ExitToApp,
                 contentDescription = "Logout",
-                tint = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                tint =  MaterialTheme.colorScheme.surface,
                 modifier = Modifier.size(30.dp)
             )
         }
