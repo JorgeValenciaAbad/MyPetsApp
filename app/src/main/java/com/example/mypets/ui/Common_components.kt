@@ -3,6 +3,7 @@ package com.example.mypets.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -19,7 +20,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -71,7 +71,7 @@ fun ItemList(navController: NavController, pet: Pet) {
             defaultElevation = 4.dp
         ),
         modifier = Modifier.padding(10.dp),
-        onClick = { navController.navigate(Destination.Details.createRoute(pet.pet_id)) }) {
+        onClick = { navController.navigate(Destination.Details.createRoute(pet.id)) }) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -204,6 +204,8 @@ fun UserName(
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
         singleLine = true,
+
+        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.primary),
         leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "User") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
@@ -228,6 +230,7 @@ fun UserEmail(
             .clip(RoundedCornerShape(10.dp)),
         leadingIcon = { Icon(imageVector = Icons.Filled.Email, contentDescription = "email") },
         singleLine = true,
+        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.primary),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Done
@@ -279,6 +282,7 @@ fun UserPass(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done
         ),
+        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.primary),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
@@ -390,5 +394,22 @@ fun LogoutIcon(){
         }
 
     }
+}
+
+@Composable
+fun ErrorMessage(text: String){
+
+//    Card(
+//        modifier = Modifier.clip(CircleShape).padding(5.dp),
+//        colors = CardDefaults.cardColors(
+//            containerColor = MaterialTheme.colorScheme.errorContainer,
+//            contentColor = MaterialTheme.colorScheme.error
+//        )
+//    ) {
+//        Text(text = text, modifier = Modifier.padding(10.dp))
+//    }
+
+          Text(text = text, modifier = Modifier.padding(10.dp), color = MaterialTheme.colorScheme.error, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+
 }
 

@@ -31,7 +31,7 @@ fun ProfileScreen(navController: NavHostController) {
         LazyColumn(Modifier.fillMaxSize()) {
             item{
                 UserProfile()
-                UserPetsList()}
+            }
 
         }
     }
@@ -40,7 +40,7 @@ fun ProfileScreen(navController: NavHostController) {
 
 @Composable
 fun UserProfile(){
-    val user =  remember { mutableStateOf(User("Jorge","1234","jorge@gmail.com",1)) }
+    val user =  remember { mutableStateOf(User("Jorge","1234","jorge@gmail.com")) }
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
         ImageUser()
         DataUser(user =user.value)
@@ -66,27 +66,6 @@ fun DataUser(user: User){
             text = "Username: " + user.name, modifier = Modifier
                 .padding(10.dp), textAlign = TextAlign.Center, color = if (isSystemInDarkTheme()) Color.White else Color.Black
         )
-
-        Text(
-            text = if (user.rol == 1) "Rol: Client" else "Rol: Admin", modifier = Modifier
-                .padding(10.dp), textAlign = TextAlign.Center, color = if (isSystemInDarkTheme()) Color.White else Color.Black
-        )
-    }
-}
-@Composable
-fun UserPetsList() {
-    val pets = listOf(
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-
-    )
-    //val pets:List<Pets> by viewModel.pets.observeAsState(initial = emptyList())
-
-    Column {
-        pets.forEach { pet ->
-            UserPetItem(pet = pet)
-        }
 
     }
 }

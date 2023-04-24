@@ -51,13 +51,13 @@ fun FilterAdoption() {
 @Composable
 fun PetsAdoption(navController: NavController) {
     val pets = listOf(
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false)
+        Pet( "Jorge", "perro", 4,"Pastor Aleman", "Amable y sociable", false),
+        Pet( "Jorge", "perro", 4,"Pastor Aleman", "Amable y sociable", false),
+        Pet( "Jorge", "perro", 4,"Pastor Aleman", "Amable y sociable", false),
+        Pet( "Jorge", "perro", 4,"Pastor Aleman", "Amable y sociable", false),
+        Pet( "Jorge", "perro", 4,"Pastor Aleman", "Amable y sociable", false),
+        Pet( "Jorge", "perro", 4,"Pastor Aleman", "Amable y sociable", false),
+        Pet( "Jorge", "perro", 4,"Pastor Aleman", "Amable y sociable", false)
     )
     //val pets:List<Pets> by viewModel.pets.observeAsState(initial = emptyList())
 

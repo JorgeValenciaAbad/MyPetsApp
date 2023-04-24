@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ import androidx.navigation.NavController
 import com.example.mypets.ui.*
 import com.example.mypets.ui.navigation.Destination
 import com.example.mypets.ui.theme.MyPetsTheme
+import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -33,7 +35,7 @@ import com.example.mypets.ui.theme.MyPetsTheme
 fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = hiltViewModel()) {
     MyPetsTheme(isLogin = true) {
         val scrollState = rememberScrollState()
-        Column( Modifier.verticalScroll(scrollState)) {
+        Column(Modifier.verticalScroll(scrollState)) {
             Card(
                 modifier = Modifier
                     .padding(20.dp)
@@ -51,7 +53,13 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
 
                     Logo()
 
-                    UserName(keyboardController,username) { viewModel.onLoginChanged(it, password, email) }
+                    UserName(keyboardController, username) {
+                        viewModel.onLoginChanged(
+                            it,
+                            password,
+                            email
+                        )
+                    }
 
                     UserEmail(keyboardController, email) {
                         viewModel.onLoginChanged(
@@ -61,7 +69,7 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                         )
                     }
 
-                    UserPass( keyboardController, password) {
+                    UserPass(keyboardController, password) {
                         viewModel.onLoginChanged(
                             username,
                             it,
@@ -69,7 +77,7 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
                         )
                     }
 
-                    RegisterButton(registerEnable)
+                    RegisterButton(registerEnable, viewModel, navController)
 
                     ButtonToLogin(navController)
 
@@ -81,7 +89,15 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
 }
 
 @Composable
-fun RegisterButton(registerEnable: Boolean) {
+fun RegisterButton(
+    registerEnable: Boolean,
+    viewModel: RegisterViewModel,
+    navController: NavController
+) {
+
+    val code by viewModel.code.observeAsState(initial = 0)
+    val scope = rememberCoroutineScope()
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -93,7 +109,14 @@ fun RegisterButton(registerEnable: Boolean) {
                 .fillMaxWidth()
                 .padding(vertical = 25.dp, horizontal = 100.dp)
                 .clip(RoundedCornerShape(10.dp)),
-            onClick = {},
+            onClick = {
+                scope.launch {
+                    viewModel.onRegisterSelected()
+                    if (code == 200) {
+                        navController.navigate(Destination.LoginScreen.route)
+                    }
+                }
+            },
             enabled = registerEnable
         ) {
             Text(text = "Sing Up")
