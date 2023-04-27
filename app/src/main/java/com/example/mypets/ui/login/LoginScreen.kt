@@ -1,6 +1,7 @@
 package com.example.mypets.ui.login
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -28,19 +29,19 @@ import com.example.mypets.ui.theme.MyPetsTheme
 import kotlinx.coroutines.launch
 
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltViewModel()) {
 
     val scrollState = rememberScrollState()
 
-    MyPetsTheme(isLogin = true) {
         Column(Modifier.verticalScroll(scrollState)) {
             LogIn(navController, viewModel)
         }
 
     }
 
-}
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

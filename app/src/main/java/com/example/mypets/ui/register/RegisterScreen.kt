@@ -26,14 +26,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mypets.ui.*
 import com.example.mypets.ui.navigation.Destination
-import com.example.mypets.ui.theme.MyPetsTheme
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = hiltViewModel()) {
-    MyPetsTheme(isLogin = true) {
         val scrollState = rememberScrollState()
         Column(Modifier.verticalScroll(scrollState)) {
             Card(
@@ -86,7 +84,6 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = 
         }
     }
 
-}
 
 @Composable
 fun RegisterButton(

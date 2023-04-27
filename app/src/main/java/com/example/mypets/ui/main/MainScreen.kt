@@ -10,13 +10,8 @@ import com.example.mypets.ui.theme.MyPetsTheme
 
 @SuppressLint("SuspiciousIndentation")
 @Composable
-@Preview(showBackground = true, showSystemUi = true)
 fun MainScreen() {
 
     val navController = rememberNavController()
-        MyPetsTheme(isLogin = false) {
-            NavigationHostMain(navController = navController )
-        }
-
-
+    NavigationHostMain(navController = navController)
 }

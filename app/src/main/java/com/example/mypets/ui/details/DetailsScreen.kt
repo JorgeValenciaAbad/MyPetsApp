@@ -1,13 +1,19 @@
 package com.example.mypets.ui.details
 
-import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -15,26 +21,42 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mypets.R
+import com.example.mypets.domain.model.Pet
 import com.example.mypets.ui.Header
+import com.example.mypets.ui.InfoItem
+import com.example.mypets.ui.Suitable
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 @Composable
-fun DetailsScreen(navController: NavController, pet: Int){
-    Log.d("PET", pet.toString())
+fun DetailsScreen(
+    navController: NavController,
+    idPet: Int,
+    viewModel: DetailsViewModel = hiltViewModel()
+) {
+
+    runBlocking {
+        viewModel.getPet(idPet)
+    }
+
     Column(verticalArrangement = Arrangement.SpaceBetween) {
         Header(navController = navController, code = 3)
-        LazyColumn( horizontalAlignment = Alignment.CenterHorizontally) {
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.padding(vertical = 10.dp)
+        ) {
 
-            item{
+            item {
                 ImagePet()
-                Card (modifier = Modifier.padding(20.dp)){
-                    DataPet()
-                    DescriptionPet()
+                ButtonAdoption()
+                Card(modifier = Modifier.padding(20.dp, 10.dp)) {
+                    DataPet(viewModel)
                 }
 
-                ButtonAdoption()
+
             }
         }
 
@@ -44,45 +66,44 @@ fun DetailsScreen(navController: NavController, pet: Int){
 }
 
 @Composable
-fun DataPet() {
-    Column {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(40.dp), Arrangement.SpaceBetween) {
-
-            Text(
-                text = "Jorge".uppercase(Locale.getDefault()),
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp
-            )
-            Text(
-                text = "Age: " + "4" + "m old.",
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                fontSize = 24.sp)
-
-        }
+fun DataPet(viewModel: DetailsViewModel) {
+    val pet by viewModel.pet.observeAsState(initial = Pet())
+    Column(Modifier.padding(20.dp)) {
+        Text(
+            text = pet.name.uppercase(Locale.getDefault()),
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center,
+            fontSize = 20.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Text(text = pet.summary, Modifier.padding(10.dp))
+        InfoItem(image = R.drawable.sex, text = pet.sex.uppercase())
+        InfoItem(image = R.drawable.weight, text = "${pet.size.uppercase()}, ${pet.weight}Kg")
+        InfoItem(image = R.drawable.baseline_pets_24, text = pet.breed)
+        InfoItem(image = R.drawable.age, text = pet.age.toString() + " year's old")
+        InfoItem(imageVector = Icons.Filled.Place, text = pet.location)
+        Suitable(value = pet.cats, text = "cats")
+        Suitable(value = pet.dogs, text = "dogs")
+        Suitable(value = pet.humans, text = "humans")
     }
 }
 
 @Composable
-fun DescriptionPet(){
-    Text(text = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas \"Letraset\", las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.", modifier = Modifier.padding(20.dp))
-}
-@Composable
-fun ImagePet(){
-    Image(painter = painterResource(id = R.drawable.gato), contentDescription = "ImagePet" )
+fun ImagePet() {
+    Image(painter = painterResource(id = R.drawable.gato), contentDescription = "ImagePet", modifier = Modifier.padding(20.dp, 10.dp))
 
 }
 
 
 @Composable
-fun ButtonAdoption(){
-    Button(onClick = { /*TODO*/ },
+fun ButtonAdoption() {
+    Button(
+        onClick = {},
         Modifier
             .fillMaxWidth()
-            .padding(20.dp)) {
+            .padding(20.dp, 10.dp)
+    ) {
         Text(text = "Adoption")
     }
 }
+

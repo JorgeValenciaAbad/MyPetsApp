@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mypets.data.MyPetsRepositoryImpl
 import com.example.mypets.domain.model.User
-import com.example.mypets.util.Constants
 import com.example.mypets.util.Functions
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
