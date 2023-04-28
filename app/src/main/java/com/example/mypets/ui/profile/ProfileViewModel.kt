@@ -31,7 +31,7 @@ class ProfileViewModel @Inject constructor(private val repository: MyPetsReposit
     }
     fun onPhoneChanged( phone: String, ){
         _phone.value = phone
-        _hashChange.value = phone.length > 9
+        _hashChange.value = phone.length == 9
 
     }
 

@@ -1,6 +1,5 @@
 package com.example.mypets.ui.pet
 
-import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -62,7 +61,6 @@ fun PetsAdoption(navController: NavController, viewModel: PetViewModel) {
 
     Column {
         pets.forEach { pet ->
-            Log.d("PET_INFO", pet.toString())
             ItemList(navController = navController, pet = pet)
         }
 

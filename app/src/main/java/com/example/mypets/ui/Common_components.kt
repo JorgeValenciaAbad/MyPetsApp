@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import com.example.mypets.R
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.ui.navigation.Destination
+import com.example.mypets.ui.pet.PetViewModel
 import com.example.mypets.ui.profile.ProfileViewModel
 import kotlinx.coroutines.runBlocking
 import java.util.*

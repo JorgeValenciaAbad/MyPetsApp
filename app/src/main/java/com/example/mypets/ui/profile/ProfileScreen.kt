@@ -5,14 +5,15 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -31,9 +32,10 @@ import com.example.mypets.R
 import com.example.mypets.domain.model.User
 import com.example.mypets.ui.ArrowBackIcon
 import com.example.mypets.ui.LogoutIcon
+import com.example.mypets.ui.UserEmail
+import com.example.mypets.ui.UserPhone
 import kotlinx.coroutines.runBlocking
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel= hiltViewModel()) {
 
@@ -45,14 +47,16 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel=
         TopBarProfile(navController = navController, viewModel = viewModel)
         LazyColumn(Modifier.fillMaxSize()) {
             item{
-                Row(
+                Column (
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement= Arrangement.Center
                 ) {
                     ImageUser()
                     DataUser(user =user)
                 }
+                ProfileForm(viewModel = viewModel)
+                DeleteUser(navController = navController, viewModel =viewModel )
             }
 
         }
@@ -83,15 +87,6 @@ fun DataUser(user: User) {
             textAlign = TextAlign.Center,
             color = if (isSystemInDarkTheme()) Color.White else Color.Black
         )
-        user.email?.let {
-            Text(
-                text = it,
-                modifier = Modifier
-                    .padding(10.dp),
-                textAlign = TextAlign.Center,
-                color = if (isSystemInDarkTheme()) Color.White else Color.Black
-            )
-        }
 
         Text(
             text = "Email: " + user.email,
@@ -120,30 +115,13 @@ fun ProfileForm(viewModel: ProfileViewModel){
 
     UserEmail(keyboardController = keyboardController, email = emailText){viewModel.onEmailChanged(it)}
     UserPhone(keyboardController = keyboardController, phone = phoneText){viewModel.onPhoneChanged(it)}
-    Button(onClick = {  }, modifier = Modifier
+    Button(onClick = { viewModel}, modifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 10.dp), enabled = isEnable) {
         Text(text = "Change")
     }
 
 }
-/*@Composable
-fun UserPetsList() {
-    val pets = listOf(
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-        Pet(1, "Jorge", "perro", 4, "Amable y sociable", false),
-
-    )
-    //val pets:List<Pets> by viewModel.pets.observeAsState(initial = emptyList())
-
-    Column {
-        pets.forEach { pet ->
-            UserPetItem(pet = pet)
-        }
-
-    }
-}*/
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarProfile(navController: NavController, viewModel: ProfileViewModel){
@@ -158,4 +136,19 @@ fun TopBarProfile(navController: NavController, viewModel: ProfileViewModel){
                 fontSize = 26.sp,
             )
         })
+}
+
+
+@Composable
+fun DeleteUser(navController: NavController, viewModel: ProfileViewModel){
+    Button(onClick = { viewModel}, modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 10.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Red,
+            contentColor = Color.White
+        )
+        ){
+        Text(text = "Delete User")
+    }
 }
