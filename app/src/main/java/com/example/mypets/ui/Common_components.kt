@@ -32,6 +32,7 @@ import androidx.navigation.NavController
 import com.example.mypets.R
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.ui.navigation.Destination
+import com.example.mypets.ui.pet.PetViewModel
 import com.example.mypets.ui.profile.ProfileViewModel
 import kotlinx.coroutines.runBlocking
 import java.util.*
@@ -166,11 +167,15 @@ fun UserPetItem(pet: Pet) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ItemType(type: String) {
+fun ItemType(type: String, viewModel: PetViewModel) {
     Card(
         modifier = Modifier
             .padding(10.dp),
-        onClick = { },
+        onClick = {
+            runBlocking {
+                viewModel.filter(type = type)
+            }
+        },
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer
         )
@@ -369,9 +374,9 @@ fun SharedIcon() {
 fun LogoutIcon(navController: NavController, viewModel: ProfileViewModel) {
     IconButton(
         onClick = {
-                  runBlocking {
-                      viewModel.logout()
-                  }
+            runBlocking {
+                viewModel.logout()
+            }
             navController.navigate(Destination.MainScreen.route)
         },
     ) {
@@ -403,25 +408,33 @@ fun ErrorMessage(text: String) {
 @Composable
 fun InfoItem(imageVector: ImageVector, text: String) {
     Row(Modifier.padding(10.dp), horizontalArrangement = Arrangement.SpaceAround) {
-        Icon(imageVector = imageVector, contentDescription = "", modifier = Modifier.padding(horizontal=5.dp))
+        Icon(
+            imageVector = imageVector,
+            contentDescription = "",
+            modifier = Modifier.padding(horizontal = 5.dp)
+        )
         Text(text = text)
     }
 }
 
 @Composable
-fun InfoItem(image: Int , text: String) {
+fun InfoItem(image: Int, text: String) {
     Row(Modifier.padding(10.dp), horizontalArrangement = Arrangement.SpaceAround) {
-        Image(painter = painterResource(image), contentDescription = "", modifier = Modifier.padding(horizontal=5.dp))
+        Image(
+            painter = painterResource(image),
+            contentDescription = "",
+            modifier = Modifier.padding(horizontal = 5.dp)
+        )
         Text(text = text)
     }
 }
 
 @Composable
-fun Suitable(value: Boolean, text: String){
+fun Suitable(value: Boolean, text: String) {
 
-    if (value){
+    if (value) {
         InfoItem(imageVector = Icons.Filled.Check, text = " The animal is suitable for $text")
-    }else{
+    } else {
         InfoItem(imageVector = Icons.Filled.Close, text = " The animal is not suitable for $text")
     }
 

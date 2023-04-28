@@ -37,9 +37,9 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
 
     }
 
-    override suspend fun getPetsTypes(): List<String>? {
+    override suspend fun getTypes(): List<String>? {
         return withContext(Dispatchers.Default){
-            val response = myPetsApi.getPetsType(dataStore.getToken()).execute()
+            val response = myPetsApi.getType(dataStore.getToken()).execute()
             Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
             response.body()
         }
@@ -52,6 +52,14 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
     override suspend fun getUser(): User? {
         return  withContext(Dispatchers.Default){
             val response = myPetsApi.getUser(dataStore.getToken()).execute()
+            Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
+            response.body()
+        }
+    }
+
+    override suspend fun filter(type: String): List<Pet>? {
+        return  withContext(Dispatchers.Default){
+            val response = myPetsApi.getPetsType(dataStore.getToken(), type).execute()
             Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
             response.body()
         }

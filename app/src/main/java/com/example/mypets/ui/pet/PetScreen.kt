@@ -50,7 +50,7 @@ fun FilterAdoption(viewModel: PetViewModel) {
     val types: List<String> by viewModel.type.observeAsState(initial = emptyList())
     LazyRow(contentPadding = PaddingValues(5.dp)) {
         items(types.size) {
-            ItemType(type = types[it])
+            ItemType(type = types[it], viewModel)
         }
     }
 }
@@ -62,7 +62,6 @@ fun PetsAdoption(navController: NavController, viewModel: PetViewModel) {
 
     Column {
         pets.forEach { pet ->
-            Log.d("PET_INFO", pet.toString())
             ItemList(navController = navController, pet = pet)
         }
 
