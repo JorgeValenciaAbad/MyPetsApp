@@ -20,6 +20,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mypets.ui.*
 import com.example.mypets.ui.navigation.Destination
@@ -27,7 +28,7 @@ import com.example.mypets.ui.theme.MyPetsTheme
 
 
 @Composable
-fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltViewModel()) {
 
     val scrollState = rememberScrollState()
 

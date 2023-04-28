@@ -17,9 +17,7 @@ fun NavigationHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Destination.LoginScreen.route) {
         composable(route = Destination.LoginScreen.route) {
            LoginScreen(
-                navController = navController,
-                viewModel = LoginViewModel()
-            )
+                navController = navController)
         }
         composable(route = Destination.RegisterScreen.route){
             RegisterScreen(navController)

@@ -4,36 +4,31 @@ import java.io.Serializable
 
 class User: Serializable {
 
-    var user_id : Int
-    var name:String
-    var pass:String
-    var email:String
-    var rol:Int
+    private var id : Int = 0
+    var name: String = ""
+    private var pass: String = ""
+    var email: String = ""
+    var phone:String = ""
 
 
-    constructor(id : Int, name:String, pass:String, email:String,rol:Int ){
-        this.user_id = id
+    constructor(id: Int, name: String, pass: String, email: String, phone: String){
+        this.id = id
         this.name = name
         this.pass = pass
-        this.rol = rol
         this.email = email
+        this.phone = phone
     }
-    constructor(name:String, pass:String, email: String, rol:Int){
-        this.user_id = 0
+    constructor(name: String, pass: String, email: String, phone: String){
         this.name = name
         this.pass = pass
-        this.rol = rol
         this.email = email
+        this.phone = phone
     }
-    constructor(){
-        this.user_id = 0
-        this.name = ""
-        this.pass = ""
-        this.rol = 1
-        this.email = ""
-    }
+
+    constructor()
+
     override fun toString(): String {
-        return "User(id=$user_id, name='$name', pass='$pass', rol=$rol, token='$email')"
+        return "User(id=$id, name='$name', pass='$pass', token='$email')"
     }
 
 }
