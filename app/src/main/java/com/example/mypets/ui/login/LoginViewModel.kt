@@ -9,7 +9,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(repository: MyPetsRepositoryImpl):ViewModel() {
+class LoginViewModel @Inject constructor(private val repository: MyPetsRepositoryImpl):ViewModel() {
+
     private  val  _email = MutableLiveData<String>()
     val email : LiveData<String> = _email
 
@@ -19,6 +20,8 @@ class LoginViewModel @Inject constructor(repository: MyPetsRepositoryImpl):ViewM
     private val _loginEnable = MutableLiveData<Boolean>()
     val loginEnable : LiveData<Boolean> = _loginEnable
 
+    private val _code = MutableLiveData<Int>()
+    val code : LiveData<Int> = _code
 
 
     fun onLogInChanged(email:String, pass:String){
@@ -27,8 +30,8 @@ class LoginViewModel @Inject constructor(repository: MyPetsRepositoryImpl):ViewM
         _loginEnable.value = Functions.isValidPassword(pass) && Functions.isValidEmail(email)
     }
 
-    fun onLogInSelected() {
-        //_token.value = data(email.value.toString(), pass.value.toString())
+    suspend fun onLogInSelected() {
+        _code.value = repository.login(_email.value.toString(), _pass.value.toString())
     }
 
 }

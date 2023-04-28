@@ -20,37 +20,44 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.mypets.R
 import com.example.mypets.domain.model.User
-import com.example.mypets.ui.Header
-import com.example.mypets.ui.UserEmail
-import com.example.mypets.ui.UserPhone
+import com.example.mypets.ui.ArrowBackIcon
+import com.example.mypets.ui.LogoutIcon
+import kotlinx.coroutines.runBlocking
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel= hiltViewModel()) {
 
-    val user = remember { mutableStateOf(User("Jorge", "1234", "jorge@gmail.com", "985 65 43 22")) }
-
-    Scaffold(topBar = { Header(navController = navController, code = 2) }) { paddingValues ->
-        LazyColumn(
-            Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            item {
-                Column{
+    runBlocking {
+        viewModel.getUser()
+    }
+    val user by viewModel.user.observeAsState(initial = User())
+    Column {
+        TopBarProfile(navController = navController, viewModel = viewModel)
+        LazyColumn(Modifier.fillMaxSize()) {
+            item{
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     ImageUser()
-                    DataUser(user = user.value)
-                    ProfileForm(viewModel = viewModel)
+                    DataUser(user =user)
                 }
             }
+
         }
     }
+
 }
 
 @Composable
@@ -71,10 +78,20 @@ fun DataUser(user: User) {
     Column {
         Text(
             text = "Username: " + user.name,
-            modifier = Modifier.padding(10.dp),
+            modifier = Modifier
+                .padding(10.dp),
             textAlign = TextAlign.Center,
             color = if (isSystemInDarkTheme()) Color.White else Color.Black
         )
+        user.email?.let {
+            Text(
+                text = it,
+                modifier = Modifier
+                    .padding(10.dp),
+                textAlign = TextAlign.Center,
+                color = if (isSystemInDarkTheme()) Color.White else Color.Black
+            )
+        }
 
         Text(
             text = "Email: " + user.email,
@@ -93,6 +110,7 @@ fun DataUser(user: User) {
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
+
 @Composable
 fun ProfileForm(viewModel: ProfileViewModel){
     val phoneText: String by viewModel.phone.observeAsState(initial = "")
@@ -126,3 +144,18 @@ fun UserPetsList() {
 
     }
 }*/
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarProfile(navController: NavController, viewModel: ProfileViewModel){
+    TopAppBar(
+        navigationIcon = { ArrowBackIcon(navController) },
+        actions = { LogoutIcon(navController, viewModel) },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+        title = {
+            Text(
+                text = "Profile",
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 26.sp,
+            )
+        })
+}

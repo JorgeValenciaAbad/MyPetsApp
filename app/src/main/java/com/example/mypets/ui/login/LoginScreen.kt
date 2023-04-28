@@ -1,6 +1,7 @@
 package com.example.mypets.ui.login
 
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -25,21 +26,22 @@ import androidx.navigation.NavController
 import com.example.mypets.ui.*
 import com.example.mypets.ui.navigation.Destination
 import com.example.mypets.ui.theme.MyPetsTheme
+import kotlinx.coroutines.launch
 
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltViewModel()) {
 
     val scrollState = rememberScrollState()
 
-    MyPetsTheme(isLogin = true) {
         Column(Modifier.verticalScroll(scrollState)) {
             LogIn(navController, viewModel)
         }
 
     }
 
-}
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -56,10 +58,11 @@ fun LogIn(navController: NavController, viewModel: LoginViewModel) {
             .padding()
             .clip(RoundedCornerShape(35.dp))
     ) {
-        Column{
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Logo()
+            Error(viewModel = viewModel)
             UserEmail(keyboardController, email) { viewModel.onLogInChanged(it, password) }
-            UserPass(keyboardController,password) { viewModel.onLogInChanged(email, it) }
+            UserPass(keyboardController, password) { viewModel.onLogInChanged(email, it) }
             LoginButton(viewModel, navController)
             ButtonToRegister(navController)
         }
@@ -71,6 +74,8 @@ fun LogIn(navController: NavController, viewModel: LoginViewModel) {
 fun LoginButton(viewModel: LoginViewModel, navController: NavController) {
 
     val hashLogin by viewModel.loginEnable.observeAsState(initial = false)
+    val code by viewModel.code.observeAsState(initial = 0)
+    val scope = rememberCoroutineScope()
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -82,7 +87,15 @@ fun LoginButton(viewModel: LoginViewModel, navController: NavController) {
                 .fillMaxWidth()
                 .padding(vertical = 25.dp, horizontal = 100.dp)
                 .clip(RoundedCornerShape(10.dp)),
-            onClick = {navController.navigate(Destination.MainScreen.route)},
+            onClick = {
+                scope.launch {
+                    viewModel.onLogInSelected()
+                    if (code == 200) {
+                        navController.navigate(Destination.MainScreen.route)
+                    }
+                }
+
+            },
             enabled = hashLogin
         ) {
             Text(text = "Log In")
@@ -90,6 +103,7 @@ fun LoginButton(viewModel: LoginViewModel, navController: NavController) {
         }
     }
 }
+
 @Composable
 fun ButtonToRegister(navController: NavController) {
     Box(
@@ -97,13 +111,32 @@ fun ButtonToRegister(navController: NavController) {
             .fillMaxWidth()
             .wrapContentHeight(),
     ) {
-        ClickableText(text = AnnotatedString("Register"),
-            onClick = { navController.navigate(Destination.RegisterScreen.route)},
+        ClickableText(
+            text = AnnotatedString("Register"),
+            onClick = { navController.navigate(Destination.RegisterScreen.route) },
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .padding(40.dp),
-            style = TextStyle(color = if(isSystemInDarkTheme()) Color.White else Color.Black)
+            style = TextStyle(color = if (isSystemInDarkTheme()) Color.White else Color.Black)
         )
+    }
+}
+
+@Composable
+fun Error(viewModel: LoginViewModel){
+    val code by viewModel.code.observeAsState(initial = 0)
+
+    when(code){
+        401->{
+            ErrorMessage(text = "Email or password is incorrect")
+        }
+
+        408 ->{
+
+        }
+        else ->{
+
+        }
     }
 }

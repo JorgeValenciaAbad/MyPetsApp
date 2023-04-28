@@ -4,9 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.mypets.ui.app.AppScreen
 import com.example.mypets.ui.login.LoginScreen
-import com.example.mypets.ui.login.LoginViewModel
-import com.example.mypets.ui.main.MainScreen
 import com.example.mypets.ui.register.RegisterScreen
 
 
@@ -16,14 +15,13 @@ fun NavigationHost(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = Destination.LoginScreen.route) {
         composable(route = Destination.LoginScreen.route) {
-           LoginScreen(
-                navController = navController)
+           LoginScreen(navController = navController)
         }
         composable(route = Destination.RegisterScreen.route){
             RegisterScreen(navController)
         }
         composable(route = Destination.MainScreen.route) {
-           MainScreen()
+           AppScreen()
         }
     }
 }

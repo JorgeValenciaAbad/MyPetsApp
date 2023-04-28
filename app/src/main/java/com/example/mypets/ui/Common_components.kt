@@ -15,11 +15,11 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -32,6 +32,8 @@ import androidx.navigation.NavController
 import com.example.mypets.R
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.ui.navigation.Destination
+import com.example.mypets.ui.profile.ProfileViewModel
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 @Composable
@@ -71,7 +73,7 @@ fun ItemList(navController: NavController, pet: Pet) {
             defaultElevation = 4.dp
         ),
         modifier = Modifier.padding(10.dp),
-        onClick = { navController.navigate(Destination.Details.createRoute(pet.pet_id)) }) {
+        onClick = { navController.navigate(Destination.Details.createRoute(pet.id)) }) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
@@ -103,7 +105,7 @@ fun ItemList(navController: NavController, pet: Pet) {
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center
                 )
-                Text(text = "Age: " + pet.age.toString() + "m old.")
+                InfoItem(imageVector = Icons.Filled.Place, text = pet.location)
             }
 
 
@@ -204,7 +206,8 @@ fun UserName(
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
         singleLine = true,
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.primary),
+
+        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.primary),
         leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "User") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
@@ -345,37 +348,21 @@ fun Header(navController: NavController, code: Int) {
 
 
         }
-        2 -> {
-
-
-            TopAppBar(
-                navigationIcon = { ArrowBackIcon()},
-                actions = { LogoutIcon()},
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
-                title = {
-                    Text(
-                        text = "Profile",
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 26.sp,
-                    )
-                })
-
-
-        }
         3 -> {
             TopAppBar(
-                navigationIcon = { ArrowBackIcon()},
-                actions = { SharedIcon()},
+                navigationIcon = { ArrowBackIcon(navController) },
+                actions = { SharedIcon() },
                 title = {},
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary))
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+            )
         }
     }
 }
 
 @Composable
-fun ArrowBackIcon(){
+fun ArrowBackIcon(navController: NavController) {
     IconButton(
-        onClick = { },
+        onClick = { navController.popBackStack() },
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(
@@ -404,9 +391,14 @@ fun SharedIcon(){
 }
 
 @Composable
-fun LogoutIcon(){
+fun LogoutIcon(navController: NavController, viewModel: ProfileViewModel) {
     IconButton(
-        onClick = { },
+        onClick = {
+                  runBlocking {
+                      viewModel.logout()
+                  }
+            navController.navigate(Destination.MainScreen.route)
+        },
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(
@@ -420,3 +412,42 @@ fun LogoutIcon(){
     }
 }
 
+@Composable
+fun ErrorMessage(text: String) {
+
+    Text(
+        text = text,
+        modifier = Modifier.padding(10.dp),
+        color = MaterialTheme.colorScheme.error,
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp
+    )
+
+}
+
+@Composable
+fun InfoItem(imageVector: ImageVector, text: String) {
+    Row(Modifier.padding(10.dp), horizontalArrangement = Arrangement.SpaceAround) {
+        Icon(imageVector = imageVector, contentDescription = "", modifier = Modifier.padding(horizontal=5.dp))
+        Text(text = text)
+    }
+}
+
+@Composable
+fun InfoItem(image: Int , text: String) {
+    Row(Modifier.padding(10.dp), horizontalArrangement = Arrangement.SpaceAround) {
+        Image(painter = painterResource(image), contentDescription = "", modifier = Modifier.padding(horizontal=5.dp))
+        Text(text = text)
+    }
+}
+
+@Composable
+fun Suitable(value: Boolean, text: String){
+
+    if (value){
+        InfoItem(imageVector = Icons.Filled.Check, text = " The animal is suitable for $text")
+    }else{
+        InfoItem(imageVector = Icons.Filled.Close, text = " The animal is not suitable for $text")
+    }
+
+}
