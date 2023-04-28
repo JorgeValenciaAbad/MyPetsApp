@@ -19,6 +19,14 @@ class PetViewModel @Inject constructor(private val repository: MyPetsRepositoryI
 
     suspend fun getData ( ){
         _pets.value = repository.getPets()
-        _type.value = repository.getPetsTypes()
+        _type.value = repository.getTypes()
+    }
+
+    suspend fun filter(type: String) {
+        if (type == "All"){
+            getData()
+        }else{
+            _pets.value = repository.filter(type)
+        }
     }
 }

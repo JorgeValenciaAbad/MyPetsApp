@@ -14,10 +14,11 @@ interface MyPetsApi {
     @GET("/api/pets")
     fun getPets(@Header("Authorization") token: String?):Call<List<Pet>>
     @GET("/api/pets/types")
-    fun getPetsType(@Header("Authorization") token: String?):Call<List<String>>
+    fun getType(@Header("Authorization") token: String?):Call<List<String>>
     @GET("/api/pets/{id}")
     fun getPet(@Header("Authorization") token: String?, @Path("id") id: Int): Call<Pet>
-
     @POST("api/user")
     fun getUser(@Header("Authorization") token: String?):Call<User>
+    @GET("api/pets/type/{type}")
+    fun getPetsType(@Header("Authorization") token: String?, @Path("type") type: String):Call<List<Pet>>
 }
