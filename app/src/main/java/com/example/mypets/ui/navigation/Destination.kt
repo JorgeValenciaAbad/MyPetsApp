@@ -7,6 +7,9 @@ sealed class Destination(val route : String) {
     object MainScreen : Destination("main_screen")
     object Pets : Destination("pets")
     object Profile : Destination("profile")
+
+    object Lost : Destination("lost")
+
     object Details : Destination("details/{id}"){
         fun createRoute (id: Int) = "details/${id}"
     }

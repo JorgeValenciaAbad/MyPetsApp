@@ -34,6 +34,9 @@ import com.example.mypets.ui.ArrowBackIcon
 import com.example.mypets.ui.LogoutIcon
 import com.example.mypets.ui.UserEmail
 import com.example.mypets.ui.UserPhone
+import com.example.mypets.ui.*
+import com.example.mypets.ui.register.ButtonToLogin
+import com.example.mypets.ui.register.RegisterButton
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -50,10 +53,10 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel=
                 Column (
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement= Arrangement.Center
+                    verticalArrangement = Arrangement.Center
                 ) {
                     ImageUser()
-                    DataUser(user =user)
+                    DataUser(user =user, viewModel)
                 }
                 ProfileForm(viewModel = viewModel)
                 DeleteUser(navController = navController, viewModel =viewModel )
@@ -65,7 +68,7 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel=
 }
 
 @Composable
-fun ImageUser() {
+fun ImageUser(){
     Image(
         painter = painterResource(id = R.drawable.profile_photo),
         contentDescription = "User image",
@@ -77,48 +80,45 @@ fun ImageUser() {
     )
 }
 
-@Composable
-fun DataUser(user: User) {
-    Column {
-        Text(
-            text = "Username: " + user.name,
-            modifier = Modifier
-                .padding(10.dp),
-            textAlign = TextAlign.Center,
-            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-        )
-
-        Text(
-            text = "Email: " + user.email,
-            modifier = Modifier.padding(10.dp),
-            textAlign = TextAlign.Center,
-            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-        )
-
-        Text(
-            text = "Phone: " + user.phone,
-            modifier = Modifier.padding(10.dp),
-            textAlign = TextAlign.Center,
-            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-        )
-    }
-}
-
 @OptIn(ExperimentalComposeUiApi::class)
-
 @Composable
-fun ProfileForm(viewModel: ProfileViewModel){
-    val phoneText: String by viewModel.phone.observeAsState(initial = "")
-    val emailText: String by viewModel.email.observeAsState(initial = "")
-    val isEnable: Boolean by viewModel.hashChange.observeAsState(initial = false)
-    val keyboardController = LocalSoftwareKeyboardController.current
+fun DataUser(user: User, viewModel: ProfileViewModel){
 
-    UserEmail(keyboardController = keyboardController, email = emailText){viewModel.onEmailChanged(it)}
-    UserPhone(keyboardController = keyboardController, phone = phoneText){viewModel.onPhoneChanged(it)}
-    Button(onClick = { viewModel}, modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 10.dp), enabled = isEnable) {
-        Text(text = "Change")
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val name: String by viewModel.name.observeAsState(initial = user.name)
+    val email: String by viewModel.email.observeAsState(initial = user.email.toString())
+    val phone: String by viewModel.phone.observeAsState(initial = user.phone)
+    val registerEnable: Boolean by viewModel.profileEnable.observeAsState(initial = false)
+    Column {
+
+
+        UserName(keyboardController, name) {
+            viewModel.onLoginChanged(
+                it,
+                email,
+                phone
+            )
+        }
+
+        UserEmail(keyboardController, email) {
+            viewModel.onLoginChanged(
+                name,
+                it,
+                phone
+            )
+        }
+
+        UserPhone(keyboardController, phone) {
+            viewModel.onLoginChanged(
+                name,
+                email,
+                it
+            )
+        }
+        Button(onClick = { }){
+            Text(text= "Update")
+        }
+
     }
 
 }

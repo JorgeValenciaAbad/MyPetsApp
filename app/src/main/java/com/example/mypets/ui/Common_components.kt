@@ -245,6 +245,31 @@ fun UserEmail(
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun UserPhone(
+    keyboardController: SoftwareKeyboardController?,
+    username: String,
+    onTextFieldChanged: (String) -> Unit
+) {
+    TextField(
+        value = username,
+        onValueChange = onTextFieldChanged,
+        label = { Text(text = "Phone") },
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(20.dp)
+            .clip(RoundedCornerShape(10.dp)),
+        singleLine = true,
+
+        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.primary),
+        leadingIcon = { Icon(imageVector = Icons.Filled.Phone, contentDescription = "phone") },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
+    )
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -345,6 +370,18 @@ fun Header(navController: NavController, code: Int) {
                                 imageVector = Icons.Filled.Person,
                                 contentDescription = "Profile",
                                 tint =  MaterialTheme.colorScheme.surface,
+                            )
+                        }
+
+                    }
+                    IconButton(
+                        onClick = { navController.navigate(Destination.Lost.route) },
+                    ) {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(
+                                imageVector = Icons.Filled.Info,
+                                contentDescription = "Lost",
+                                tint = MaterialTheme.colorScheme.surface,
                             )
                         }
 

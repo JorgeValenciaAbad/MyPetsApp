@@ -8,6 +8,7 @@ import com.example.mypets.domain.model.User
 import com.example.mypets.domain.repository.PetsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MultipartBody
 
 class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataStore: DataStoreManager) : PetsRepository {
     override suspend fun login(email: String, pass: String):Int{
@@ -42,6 +43,14 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
             val response = myPetsApi.getType(dataStore.getToken()).execute()
             Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
             response.body()
+        }
+    }
+
+    override suspend fun addComplaint(image: MultipartBody.Part, text: String): Int {
+        return withContext(Dispatchers.Default){
+            val response = myPetsApi.addComplaint(dataStore.getToken(),image,text).execute()
+            Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
+            response.code()
         }
     }
 
