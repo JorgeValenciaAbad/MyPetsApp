@@ -2,6 +2,7 @@ package com.example.mypets.domain.repository
 
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.domain.model.User
+import okhttp3.MultipartBody
 
 interface PetsRepository {
     suspend fun login (email: String, pass: String):Int
@@ -13,4 +14,5 @@ interface PetsRepository {
     suspend fun filter(type: String): List<Pet>?
     suspend fun logout ()
     suspend fun getTypes(): List<String>?
+    suspend fun addComplaint(image: MultipartBody.Part, text: String): Int
 }

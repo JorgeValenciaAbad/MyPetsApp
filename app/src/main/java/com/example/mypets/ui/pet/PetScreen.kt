@@ -49,6 +49,9 @@ fun FilterAdoption(viewModel: PetViewModel) {
 
     val types: List<String> by viewModel.type.observeAsState(initial = emptyList())
     LazyRow(contentPadding = PaddingValues(5.dp)) {
+        item{
+            ItemType("All" , viewModel )
+        }
         items(types.size) {
             ItemType(type = types[it], viewModel)
         }

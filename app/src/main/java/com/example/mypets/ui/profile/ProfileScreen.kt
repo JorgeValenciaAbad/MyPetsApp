@@ -9,9 +9,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -22,8 +24,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.mypets.R
 import com.example.mypets.domain.model.User
-import com.example.mypets.ui.ArrowBackIcon
-import com.example.mypets.ui.LogoutIcon
+import com.example.mypets.ui.*
+import com.example.mypets.ui.register.ButtonToLogin
+import com.example.mypets.ui.register.RegisterButton
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -37,13 +40,13 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel=
         TopBarProfile(navController = navController, viewModel = viewModel)
         LazyColumn(Modifier.fillMaxSize()) {
             item{
-                Row(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
                     ImageUser()
-                    DataUser(user =user)
+                    DataUser(user =user, viewModel)
                 }
             }
 
@@ -65,25 +68,45 @@ fun ImageUser(){
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun DataUser(user: User){
+fun DataUser(user: User, viewModel: ProfileViewModel){
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val name: String by viewModel.name.observeAsState(initial = user.name)
+    val email: String by viewModel.email.observeAsState(initial = user.email.toString())
+    val phone: String by viewModel.phone.observeAsState(initial = user.phone)
+    val registerEnable: Boolean by viewModel.profileEnable.observeAsState(initial = false)
     Column {
-        Text(
-            text = "Username: " + user.name,
-            modifier = Modifier
-                .padding(10.dp),
-            textAlign = TextAlign.Center,
-            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-        )
-        user.email?.let {
-            Text(
-                text = it,
-                modifier = Modifier
-                    .padding(10.dp),
-                textAlign = TextAlign.Center,
-                color = if (isSystemInDarkTheme()) Color.White else Color.Black
+
+
+        UserName(keyboardController, name) {
+            viewModel.onLoginChanged(
+                it,
+                email,
+                phone
             )
         }
+
+        UserEmail(keyboardController, email) {
+            viewModel.onLoginChanged(
+                name,
+                it,
+                phone
+            )
+        }
+
+        UserPhone(keyboardController, phone) {
+            viewModel.onLoginChanged(
+                name,
+                email,
+                it
+            )
+        }
+        Button(onClick = { }){
+            Text(text= "Update")
+        }
+
     }
 }
 @OptIn(ExperimentalMaterial3Api::class)
