@@ -14,5 +14,6 @@ interface PetsRepository {
     suspend fun filter(type: String): List<Pet>?
     suspend fun logout ()
     suspend fun getTypes(): List<String>?
+    suspend fun updateUser(user: User):User?
     suspend fun addComplaint(image: MultipartBody.Part, text: String): Int
 }

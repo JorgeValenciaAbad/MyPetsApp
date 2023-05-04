@@ -212,7 +212,7 @@ fun UserName(
             .clip(RoundedCornerShape(10.dp)),
         singleLine = true,
 
-        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.primary),
+        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
         leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "User") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
@@ -241,35 +241,10 @@ fun UserEmail(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Done
         ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.primary),
+        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
-@Composable
-fun UserPhone(
-    keyboardController: SoftwareKeyboardController?,
-    username: String,
-    onTextFieldChanged: (String) -> Unit
-) {
-    TextField(
-        value = username,
-        onValueChange = onTextFieldChanged,
-        label = { Text(text = "Phone") },
-        modifier = Modifier
-            .wrapContentHeight()
-            .fillMaxWidth()
-            .padding(20.dp)
-            .clip(RoundedCornerShape(10.dp)),
-        singleLine = true,
-
-        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.primary),
-        leadingIcon = { Icon(imageVector = Icons.Filled.Phone, contentDescription = "phone") },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-    )
-}
-
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -328,7 +303,7 @@ fun UserPhone(
     TextField(
         value = phone,
         onValueChange = onTextFieldChanged,
-        label = { Text(text = "Email") },
+        label = { Text(text = "Phone") },
         modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
@@ -340,7 +315,7 @@ fun UserPhone(
             keyboardType = KeyboardType.Phone,
             imeAction = ImeAction.Done
         ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.primary),
+        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }

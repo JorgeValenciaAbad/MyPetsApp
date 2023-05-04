@@ -22,6 +22,8 @@ interface MyPetsApi {
     fun getUser(@Header("Authorization") token: String?):Call<User>
     @GET("api/pet/type/{type}")
     fun getPetsType(@Header("Authorization") token: String?, @Path("type") type: String):Call<List<Pet>>
+    @PUT("/api/user")
+    fun updateUser(@Header("Authorization") token: String?,@Body user: User): Call<User>
     @Multipart
     @POST("/api/pet/complaint")
     fun addComplaint(@Header("Authorization") token: String?, @Part image: MultipartBody.Part, @Query("summary") text:String): Call<Int>

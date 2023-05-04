@@ -1,16 +1,9 @@
 package com.example.mypets.ui.profile
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -22,7 +15,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,13 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.mypets.R
 import com.example.mypets.domain.model.User
-import com.example.mypets.ui.ArrowBackIcon
-import com.example.mypets.ui.LogoutIcon
-import com.example.mypets.ui.UserEmail
-import com.example.mypets.ui.UserPhone
 import com.example.mypets.ui.*
-import com.example.mypets.ui.register.ButtonToLogin
-import com.example.mypets.ui.register.RegisterButton
 import kotlinx.coroutines.runBlocking
 
 @Composable
@@ -58,7 +44,6 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel=
                     ImageUser()
                     DataUser(user =user, viewModel)
                 }
-                ProfileForm(viewModel = viewModel)
                 DeleteUser(navController = navController, viewModel =viewModel )
             }
 
@@ -88,7 +73,7 @@ fun DataUser(user: User, viewModel: ProfileViewModel){
     val name: String by viewModel.name.observeAsState(initial = user.name)
     val email: String by viewModel.email.observeAsState(initial = user.email.toString())
     val phone: String by viewModel.phone.observeAsState(initial = user.phone)
-    val registerEnable: Boolean by viewModel.profileEnable.observeAsState(initial = false)
+    val profileEnable: Boolean by viewModel.profileEnable.observeAsState(initial = false)
     Column {
 
 
@@ -115,7 +100,7 @@ fun DataUser(user: User, viewModel: ProfileViewModel){
                 it
             )
         }
-        Button(onClick = { }){
+        Button(onClick = { runBlocking { viewModel.update(user) }}, modifier = Modifier.fillMaxWidth().padding( horizontal = 20.dp), enabled = profileEnable ){
             Text(text= "Update")
         }
 
@@ -143,7 +128,7 @@ fun TopBarProfile(navController: NavController, viewModel: ProfileViewModel){
 fun DeleteUser(navController: NavController, viewModel: ProfileViewModel){
     Button(onClick = { viewModel}, modifier = Modifier
         .fillMaxWidth()
-        .padding(horizontal = 10.dp),
+        .padding(horizontal = 20.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Red,
             contentColor = Color.White

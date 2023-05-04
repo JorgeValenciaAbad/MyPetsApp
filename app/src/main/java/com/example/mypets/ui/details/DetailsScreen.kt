@@ -103,7 +103,7 @@ fun ButtonAdoption() {
             .fillMaxWidth()
             .padding(20.dp, 10.dp)
     ) {
-        Text(text = "Contact Us")
+        Text(text = "Apply for Adoption")
     }
 }
 
