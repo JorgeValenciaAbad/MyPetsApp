@@ -212,7 +212,7 @@ fun UserName(
             .clip(RoundedCornerShape(10.dp)),
         singleLine = true,
 
-        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.primary),
+        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
         leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "User") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
@@ -241,7 +241,7 @@ fun UserEmail(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Done
         ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.primary),
+        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
@@ -263,9 +263,12 @@ fun UserPhone(
             .clip(RoundedCornerShape(10.dp)),
         singleLine = true,
 
-        colors = TextFieldDefaults.textFieldColors(textColor = MaterialTheme.colorScheme.primary),
+        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
         leadingIcon = { Icon(imageVector = Icons.Filled.Phone, contentDescription = "phone") },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+        ),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
@@ -310,37 +313,11 @@ fun UserPass(
                 }
             }
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.primary),
+        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done
         ),
-        keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
-    )
-}
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
-@Composable
-fun UserPhone(
-    keyboardController: SoftwareKeyboardController?,
-    phone: String,
-    onTextFieldChanged: (String) -> Unit
-) {
-    TextField(
-        value = phone,
-        onValueChange = onTextFieldChanged,
-        label = { Text(text = "Email") },
-        modifier = Modifier
-            .wrapContentHeight()
-            .fillMaxWidth()
-            .padding(20.dp)
-            .clip(RoundedCornerShape(10.dp)),
-        leadingIcon = { Icon(imageVector = Icons.Filled.Phone, contentDescription = "email") },
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Phone,
-            imeAction = ImeAction.Done
-        ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.primary),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }

@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.example.mypets.data.MyPetsRepositoryImpl
 import com.example.mypets.util.Functions
 import com.example.mypets.domain.model.User
-import com.example.mypets.util.Functions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
