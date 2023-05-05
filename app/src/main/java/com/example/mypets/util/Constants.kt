@@ -12,6 +12,8 @@ object Constants {
     //const val BASE_URL = "http://192.168.1.102:5002"
     const val BASE_URL = "http://192.168.1.13:5002"
 
+    const val EMPTY_STRING = ""
+
     val patternPass : Pattern = Pattern.compile(PASS_REGEX)
 
     val patternEmail : Pattern = Pattern.compile(EMAIL_REGEX)

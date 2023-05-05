@@ -37,13 +37,6 @@ fun LostScreen(viewModel: LostViewModel = hiltViewModel()){
             }
         }
         item {
-            AsyncImage(model = image, contentDescription = "")
-            Log.d("Path", image?.path.toString())
-            Log.d("Path", image?.isAbsolute.toString()+ image?.userInfo)
-        }
-
-
-        item {
             Button(onClick = {
                 runBlocking {
                     viewModel.create()

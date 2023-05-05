@@ -46,6 +46,14 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
         }
     }
 
+    override suspend fun updateUser(user: User): User? {
+        return withContext(Dispatchers.Default){
+            val response = myPetsApi.updateUser(dataStore.getToken(),user).execute()
+            Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
+            response.body()
+        }
+    }
+
     override suspend fun addComplaint(image: MultipartBody.Part, text: String): Int {
         return withContext(Dispatchers.Default){
             val response = myPetsApi.addComplaint(dataStore.getToken(),image,text).execute()

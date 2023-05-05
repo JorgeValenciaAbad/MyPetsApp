@@ -3,14 +3,7 @@ package com.example.mypets.ui.profile
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -80,8 +73,8 @@ fun DataUser(user: User, viewModel: ProfileViewModel){
     val name: String by viewModel.name.observeAsState(initial = user.name)
     val email: String by viewModel.email.observeAsState(initial = user.email.toString())
     val phone: String by viewModel.phone.observeAsState(initial = user.phone)
-    val registerEnable: Boolean by viewModel.profileEnable.observeAsState(initial = false)
-    Column (verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally){
+    val profileEnable: Boolean by viewModel.profileEnable.observeAsState(initial = false)
+    Column {
 
 
         UserName(keyboardController, name) {
@@ -107,7 +100,7 @@ fun DataUser(user: User, viewModel: ProfileViewModel){
                 it
             )
         }
-        Button(onClick = { }, modifier = Modifier.fillMaxWidth(). padding(20.dp)){
+        Button(onClick = { runBlocking { viewModel.update(user) }}, modifier = Modifier.fillMaxWidth().padding( horizontal = 20.dp), enabled = profileEnable ){
             Text(text= "Update")
         }
 

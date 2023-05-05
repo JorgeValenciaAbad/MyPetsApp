@@ -51,5 +51,7 @@ class ProfileViewModel @Inject constructor(private val repository: MyPetsReposit
         user.name = name.value.toString()
         user.phone = phone.value.toString()
         user.email = email.value.toString()
+
+        repository.updateUser(user)
     }
 }
