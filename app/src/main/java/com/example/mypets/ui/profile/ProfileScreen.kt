@@ -1,8 +1,12 @@
 package com.example.mypets.ui.profile
 
-import androidx.compose.foundation.Image
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -10,17 +14,15 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.example.mypets.R
 import com.example.mypets.domain.model.User
 import com.example.mypets.ui.*
 import kotlinx.coroutines.runBlocking
@@ -31,6 +33,15 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel=
     runBlocking {
         viewModel.getUser()
     }
+
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> runBlocking {
+            uri?.let { viewModel.changeAvatar(uri) }
+            viewModel.getUser()
+        } }
+    )
+
     val user by viewModel.user.observeAsState(initial = User())
     Column {
         TopBarProfile(navController = navController, viewModel = viewModel)
@@ -41,28 +52,22 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel=
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    ImageUser()
-                    DataUser(user =user, viewModel)
+                    Images(imageName = user.image, modifier = Modifier
+                        .padding(10.dp)
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .clickable {
+                            singlePhotoPickerLauncher.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        ) },)
+                    DataUser(user = user, viewModel)
                 }
-                DeleteUser(navController = navController, viewModel =viewModel )
+                DeleteUser(navController = navController, viewModel = viewModel )
             }
 
         }
     }
 
-}
-
-@Composable
-fun ImageUser(){
-    Image(
-        painter = painterResource(id = R.drawable.profile_photo),
-        contentDescription = "User image",
-        modifier = Modifier
-            .padding(10.dp)
-            .size(100.dp),
-        Alignment.Center,
-        contentScale = ContentScale.Fit
-    )
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -100,7 +105,9 @@ fun DataUser(user: User, viewModel: ProfileViewModel){
                 it
             )
         }
-        Button(onClick = { runBlocking { viewModel.update(user) }}, modifier = Modifier.fillMaxWidth().padding( horizontal = 20.dp), enabled = profileEnable ){
+        Button(onClick = { runBlocking { viewModel.update(user) }}, modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp), enabled = profileEnable ){
             Text(text= "Update")
         }
 

@@ -1,5 +1,7 @@
 package com.example.mypets.ui.profile
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,11 +9,13 @@ import androidx.lifecycle.ViewModel
 import com.example.mypets.data.MyPetsRepositoryImpl
 import com.example.mypets.util.Functions
 import com.example.mypets.domain.model.User
+import com.example.mypets.util.FileUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val repository: MyPetsRepositoryImpl) :
+class ProfileViewModel @Inject constructor(@ApplicationContext private val context: Context, private val repository: MyPetsRepositoryImpl) :
     ViewModel() {
 
     private val _user = MutableLiveData<User>()
@@ -26,6 +30,9 @@ class ProfileViewModel @Inject constructor(private val repository: MyPetsReposit
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> = _email
 
+//    private val _avatar = MutableLiveData<Uri>()
+//    val avatar: LiveData<Uri> = _avatar
+
     private val _profileEnable = MutableLiveData<Boolean>()
     val profileEnable: LiveData<Boolean> = _profileEnable
 
@@ -36,6 +43,10 @@ class ProfileViewModel @Inject constructor(private val repository: MyPetsReposit
 
     suspend fun logout() {
         repository.logout()
+    }
+
+    suspend fun changeAvatar (uri: Uri): Int{
+        return repository.changeAvatar(Functions.uriToMultiPartBody(FileUtils.getPath(context,uri)))
     }
 
     fun onLoginChanged(name: String, email: String, phone: String){

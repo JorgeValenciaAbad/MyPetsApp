@@ -1,5 +1,6 @@
 package com.example.mypets.data.remote
 
+import com.example.mypets.domain.model.PetMiss
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.domain.model.User
 import okhttp3.MultipartBody
@@ -27,4 +28,9 @@ interface MyPetsApi {
     @Multipart
     @POST("/api/pet/complaint")
     fun addComplaint(@Header("Authorization") token: String?, @Part image: MultipartBody.Part, @Query("summary") text:String): Call<Int>
+    @GET("/api/pet/complaint")
+    fun getComplaint(@Header("Authorization") token: String?): Call<List<PetMiss>>
+    @Multipart
+    @PUT("/api/user/image")
+    fun changeAvatar (@Header("Authorization") token: String?, @Part image: MultipartBody.Part): Call<Int>
 }

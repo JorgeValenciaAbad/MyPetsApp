@@ -74,12 +74,6 @@ object CoreModule {
 
     @Singleton
     @Provides
-    fun providesProfileViewModel(myPetsRepositoryImpl: MyPetsRepositoryImpl): ProfileViewModel {
-        return ProfileViewModel(myPetsRepositoryImpl)
-    }
-
-    @Singleton
-    @Provides
     fun providesDetailsViewModel(myPetsRepositoryImpl: MyPetsRepositoryImpl): DetailsViewModel {
         return DetailsViewModel(myPetsRepositoryImpl)
     }

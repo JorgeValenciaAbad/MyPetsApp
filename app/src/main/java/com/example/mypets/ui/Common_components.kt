@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -29,11 +28,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.mypets.R
 import com.example.mypets.domain.model.Pet
+import com.example.mypets.domain.model.PetMiss
 import com.example.mypets.ui.navigation.Destination
 import com.example.mypets.ui.pet.PetViewModel
 import com.example.mypets.ui.profile.ProfileViewModel
+import com.example.mypets.util.Constants
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -53,19 +55,15 @@ fun Logo() {
 }
 
 @Composable
-fun ImagePet(id: Int) {
-    Image(
-        painter = painterResource(id = id),
-        contentDescription = stringResource(R.string.dog),
-        contentScale = ContentScale.Fit,
-        modifier = Modifier
-            .size(100.dp)
-            .clip(shape = RoundedCornerShape(20.dp)),
+fun Images(imageName: String, modifier: Modifier) {
+    AsyncImage(
+        model = Constants.BASE_URL + "/api/image/" + imageName,
+        contentDescription = "Image $imageName",
+        contentScale = ContentScale.Crop,
+        modifier = modifier,
         alignment = Alignment.Center
     )
 }
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemList(navController: NavController, pet: Pet) {
@@ -84,17 +82,12 @@ fun ItemList(navController: NavController, pet: Pet) {
 
             ) {
 
-            when (pet.type) {
-                stringResource(R.string.dog) -> {
-                    ImagePet(id = R.drawable.perro)
-                }
-                stringResource(R.string.cat) -> {
-                    ImagePet(id = R.drawable.gato)
-                }
-                stringResource(R.string.bird) -> {
-                    ImagePet(id = R.drawable.pajaro)
-                }
-            }
+            Images(
+                imageName = pet.image, modifier = Modifier
+                    .size(100.dp)
+                    .clip(shape = RoundedCornerShape(20.dp))
+            )
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -114,54 +107,22 @@ fun ItemList(navController: NavController, pet: Pet) {
     }
 }
 
-
 @Composable
-fun UserPetItem(pet: Pet) {
-    Card(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
-        )
-    ) {
+fun ItemMiss(petMiss: PetMiss){
+    Card( modifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp),
             horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically,
-
-            ) {
-
-            when (pet.type) {
-                stringResource(R.string.dog) -> {
-                    ImagePet(id = R.drawable.perro)
-                }
-                stringResource(R.string.cat) -> {
-                    ImagePet(id = R.drawable.gato)
-                }
-                stringResource(R.string.bird) -> {
-                    ImagePet(id = R.drawable.pajaro)
-                }
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp), Arrangement.Center
-            ) {
-
-                Text(
-                    text = pet.name.uppercase(Locale.getDefault()),
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    color = if (isSystemInDarkTheme()) Color.White else Color.Black
-                )
-                Text(
-                    text = "Age: " + pet.age.toString() + "m old.",
-                    color = if (isSystemInDarkTheme()) Color.White else Color.Black
-                )
-            }
-
-
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Images(imageName = petMiss.image, modifier = Modifier
+                .size(150.dp)
+                .padding(20.dp)
+                .clip(RoundedCornerShape(10.dp)) )
+            Text(text = petMiss.summary)
         }
+
     }
 }
 
@@ -245,6 +206,7 @@ fun UserEmail(
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
+
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun UserPhone(
@@ -321,61 +283,22 @@ fun UserPass(
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Header(navController: NavController, code: Int) {
-
-    when (code) {
-
-        1 -> {
-            TopAppBar(title = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = "My Pets",
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 26.sp,
-                    )
-                }
-            },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
-                actions = {
-                    IconButton(
-                        onClick = { navController.navigate(Destination.Profile.route) },
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(
-                                imageVector = Icons.Filled.Person,
-                                contentDescription = "Profile",
-                                tint =  MaterialTheme.colorScheme.surface,
-                            )
-                        }
-
-                    }
-                    IconButton(
-                        onClick = { navController.navigate(Destination.Lost.route) },
-                    ) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(
-                                imageVector = Icons.Filled.Info,
-                                contentDescription = "Lost",
-                                tint = MaterialTheme.colorScheme.surface,
-                            )
-                        }
-
-                    }
-                })
-
-
-        }
-        3 -> {
-            TopAppBar(
-                navigationIcon = { ArrowBackIcon(navController) },
-                actions = { SharedIcon() },
-                title = {},
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
-            )
-        }
-    }
+fun Summary(summary: String, onTextFieldChanged: (String) -> Unit) {
+    TextField(
+        value = summary,
+        onValueChange = onTextFieldChanged,
+        maxLines = 10,
+        placeholder = { Text(text = "Enter your text here") },
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(20.dp)
+            .clip(RoundedCornerShape(10.dp)),
+        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground)
+    )
 }
 
 @Composable
@@ -387,22 +310,6 @@ fun ArrowBackIcon(navController: NavController) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "ArrowBack",
-                modifier = Modifier.size(30.dp)
-            )
-        }
-    }
-}
-
-@Composable
-fun SharedIcon(){
-    IconButton(
-        onClick = { },
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                imageVector = Icons.Filled.Share,
-                contentDescription = "SharePet",
-                tint = MaterialTheme.colorScheme.surface,
                 modifier = Modifier.size(30.dp)
             )
         }
@@ -423,7 +330,7 @@ fun LogoutIcon(navController: NavController, viewModel: ProfileViewModel) {
             Icon(
                 imageVector = Icons.Filled.ExitToApp,
                 contentDescription = "Logout",
-                tint =  MaterialTheme.colorScheme.surface,
+                tint = MaterialTheme.colorScheme.surface,
                 modifier = Modifier.size(30.dp)
             )
         }
@@ -459,7 +366,7 @@ fun InfoItem(imageVector: ImageVector, text: String) {
 @Composable
 fun InfoItem(image: Int, text: String) {
     Row(Modifier.padding(10.dp), horizontalArrangement = Arrangement.SpaceAround) {
-        Image(
+        Icon(
             painter = painterResource(image),
             contentDescription = "",
             modifier = Modifier.padding(horizontal = 5.dp)
@@ -477,4 +384,54 @@ fun Suitable(value: Boolean, text: String) {
         InfoItem(imageVector = Icons.Filled.Close, text = " The animal is not suitable for $text")
     }
 
+}
+
+@Composable
+fun TitleScreen(top: String, down: String) {
+    Column(Modifier.padding(20.dp)) {
+        Text(
+            text = top,
+            fontWeight = FontWeight.Light,
+            fontSize = 20.sp,
+            color = if (isSystemInDarkTheme()) Color.White else Color.Black
+        )
+        Text(
+            text = down,
+            fontWeight = FontWeight.ExtraBold,
+            fontSize = 26.sp,
+            color = if (isSystemInDarkTheme()) Color.White else Color.Black
+        )
+    }
+}
+
+
+
+@Composable
+fun TitleScreen(text: String) {
+    Column(Modifier.padding(20.dp)) {
+        Text(
+            text = text,
+            fontWeight = FontWeight.Light,
+            fontSize = 20.sp,
+            color = if (isSystemInDarkTheme()) Color.White else Color.Black
+        )
+
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarArrowBack(navController: NavController, title: String) {
+    TopAppBar(
+        navigationIcon = { ArrowBackIcon(navController) },
+        title = {
+            Text(
+                text = title,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                fontSize = 20.sp,
+            )
+        },
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
+    )
 }

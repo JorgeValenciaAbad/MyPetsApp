@@ -15,10 +15,11 @@ class Pet: Serializable {
     var weight: Double = 0.0
     var summary: String = ""
     var location: String = ""
-    var adoption: Boolean = false
+    private var adoption: Boolean = false
     var cats: Boolean = false
     var dogs: Boolean = false
     var humans: Boolean = false
+    var image: String = ""
 
     constructor()
     constructor(
@@ -35,7 +36,8 @@ class Pet: Serializable {
         adoption: Boolean,
         cats:Boolean,
         dogs:Boolean,
-        humans:Boolean
+        humans:Boolean,
+        image:String
 
     ) {
         this.id = id
@@ -52,35 +54,7 @@ class Pet: Serializable {
         this.cats = cats
         this.dogs = dogs
         this.humans = humans
-    }
-    constructor(
-        name: String,
-        type: String,
-        age: Int,
-        breed: String,
-        sex: String,
-        size: String,
-        weight: Double,
-        summary: String,
-        location: String,
-        adoption: Boolean,
-        cats:Boolean,
-        dogs:Boolean,
-        humans:Boolean
-    ) {
-        this.name = name
-        this.type = type
-        this.age = age
-        this.breed = breed
-        this.sex = sex
-        this.size = size
-        this.weight = weight
-        this.summary = summary
-        this.adoption = adoption
-        this.location = location
-        this.cats = cats
-        this.dogs = dogs
-        this.humans = humans
+        this.image = image
     }
 
     override fun toString(): String {

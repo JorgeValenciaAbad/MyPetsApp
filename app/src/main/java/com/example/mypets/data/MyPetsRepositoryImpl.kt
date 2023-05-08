@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.mypets.data.local.DataStoreManager
 import com.example.mypets.data.remote.MyPetsApi
 import com.example.mypets.domain.model.Pet
+import com.example.mypets.domain.model.PetMiss
 import com.example.mypets.domain.model.User
 import com.example.mypets.domain.repository.PetsRepository
 import kotlinx.coroutines.Dispatchers
@@ -57,6 +58,22 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
     override suspend fun addComplaint(image: MultipartBody.Part, text: String): Int {
         return withContext(Dispatchers.Default){
             val response = myPetsApi.addComplaint(dataStore.getToken(),image,text).execute()
+            Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
+            response.code()
+        }
+    }
+
+    override suspend fun getComplaint(): List<PetMiss>? {
+        return withContext(Dispatchers.Default){
+            val response = myPetsApi.getComplaint(dataStore.getToken()).execute()
+            Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
+            response.body()
+        }
+    }
+
+    override suspend fun changeAvatar(image: MultipartBody.Part): Int {
+        return withContext(Dispatchers.Default){
+            val response = myPetsApi.changeAvatar(dataStore.getToken(),image).execute()
             Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
             response.code()
         }

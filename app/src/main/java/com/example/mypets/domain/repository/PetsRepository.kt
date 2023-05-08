@@ -1,6 +1,7 @@
 package com.example.mypets.domain.repository
 
 import com.example.mypets.domain.model.Pet
+import com.example.mypets.domain.model.PetMiss
 import com.example.mypets.domain.model.User
 import okhttp3.MultipartBody
 
@@ -16,4 +17,6 @@ interface PetsRepository {
     suspend fun getTypes(): List<String>?
     suspend fun updateUser(user: User):User?
     suspend fun addComplaint(image: MultipartBody.Part, text: String): Int
+    suspend fun getComplaint(): List<PetMiss>?
+    suspend fun changeAvatar(image: MultipartBody.Part): Int
 }

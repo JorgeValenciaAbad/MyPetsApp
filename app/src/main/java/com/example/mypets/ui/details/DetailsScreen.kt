@@ -1,10 +1,10 @@
 package com.example.mypets.ui.details
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
@@ -16,7 +16,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -25,9 +24,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mypets.R
 import com.example.mypets.domain.model.Pet
-import com.example.mypets.ui.Header
+import com.example.mypets.ui.Images
 import com.example.mypets.ui.InfoItem
 import com.example.mypets.ui.Suitable
+import com.example.mypets.ui.TopBarArrowBack
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -41,19 +41,19 @@ fun DetailsScreen(
     runBlocking {
         viewModel.getPet(idPet)
     }
-
+    val pet by viewModel.pet.observeAsState(initial = Pet())
     Column(verticalArrangement = Arrangement.SpaceBetween) {
-        Header(navController = navController, code = 3)
+        TopBarArrowBack(navController = navController, title = pet.name)
         LazyColumn(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.padding(vertical = 10.dp)
         ) {
 
             item {
-                ImagePet()
+                Images(pet.image, Modifier.padding(20.dp, 10.dp).size(250.dp))
                 ButtonAdoption()
                 Card(modifier = Modifier.padding(20.dp, 10.dp)) {
-                    DataPet(viewModel)
+                    DataPet(pet)
                 }
 
 
@@ -66,16 +66,9 @@ fun DetailsScreen(
 }
 
 @Composable
-fun DataPet(viewModel: DetailsViewModel) {
-    val pet by viewModel.pet.observeAsState(initial = Pet())
+fun DataPet(pet: Pet) {
     Column(Modifier.padding(20.dp)) {
-        Text(
-            text = pet.name.uppercase(Locale.getDefault()),
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp,
-            modifier = Modifier.fillMaxWidth()
-        )
+
         Text(text = pet.summary, Modifier.padding(10.dp))
         InfoItem(image = R.drawable.sex, text = pet.sex.uppercase())
         InfoItem(image = R.drawable.weight, text = "${pet.size.uppercase()}, ${pet.weight}Kg")
@@ -88,11 +81,6 @@ fun DataPet(viewModel: DetailsViewModel) {
     }
 }
 
-@Composable
-fun ImagePet() {
-    Image(painter = painterResource(id = R.drawable.gato), contentDescription = "ImagePet", modifier = Modifier.padding(20.dp, 10.dp))
-
-}
 
 
 @Composable

@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mypets.ui.app.AppScreen
 import com.example.mypets.ui.details.DetailsScreen
+import com.example.mypets.ui.lost.ListPetsMissingScreen
 import com.example.mypets.ui.lost.LostScreen
 import com.example.mypets.ui.pet.PetsScreen
 import com.example.mypets.ui.profile.ProfileScreen
@@ -22,8 +23,11 @@ fun NavigationHostMain(navController: NavHostController) {
         composable(route = Destination.Profile.route){
             ProfileScreen(navController)
         }
+        composable(route = Destination.MissList.route){
+            ListPetsMissingScreen(navController)
+        }
         composable(route = Destination.Lost.route){
-            LostScreen()
+            LostScreen(navController)
         }
         composable(route = Destination.Details.route){
             val pet = it.arguments?.getString("id")

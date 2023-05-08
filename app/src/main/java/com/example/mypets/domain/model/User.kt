@@ -9,14 +9,16 @@ class User: Serializable {
     private var pass: String? = ""
     var email: String? = ""
     var phone: String = ""
+    var image: String = ""
 
 
-    constructor(id: Int, name: String, pass: String, email: String, phone: String ){
+    constructor(id: Int, name: String, pass: String, email: String, phone: String, image: String ){
         this.id = id
         this.name = name
         this.pass = pass
         this.email = email
         this.phone = phone
+        this.image = image
     }
     constructor(name: String, pass: String, email: String){
         this.name = name
