@@ -32,10 +32,11 @@ fun LostScreen(navController: NavController, viewModel: LostViewModel = hiltView
 
     val image: Uri? by viewModel.image.observeAsState(initial = null)
     val summary: String by viewModel.summary.observeAsState("")
+    val missEnable by viewModel.missEnable.observeAsState(initial = false)
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> uri?.let { viewModel.onChangeTextField(it, summary) } }
+        onResult = { uri -> uri?.let { viewModel.onChangeTextField(it) } }
     )
     Column(verticalArrangement = Arrangement.Center) {
         TopBarArrowBack(navController = navController, title = "Pet's Missing")
@@ -50,7 +51,7 @@ fun LostScreen(navController: NavController, viewModel: LostViewModel = hiltView
             ) {
                 Text(text = if (image != null) "Image selected" else "Pick one photo")
             }
-            Summary(summary = summary) { image?.let { img -> viewModel.onChangeTextField(img,it) } }
+            Summary(summary = summary) { summary -> viewModel.onChangeTextField(summary) }
             Box(modifier = Modifier.fillMaxWidth(), Alignment.Center) {
                 Button(
                     onClick = {
@@ -58,7 +59,7 @@ fun LostScreen(navController: NavController, viewModel: LostViewModel = hiltView
                             viewModel.create()
                         }
                     },
-                    enabled = false
+                    enabled = missEnable
                 ) {
                     Text(text = "Complaint")
                 }

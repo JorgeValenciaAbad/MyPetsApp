@@ -16,10 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mypets.R
@@ -28,8 +25,8 @@ import com.example.mypets.ui.Images
 import com.example.mypets.ui.InfoItem
 import com.example.mypets.ui.Suitable
 import com.example.mypets.ui.TopBarArrowBack
+import com.example.mypets.ui.navigation.Destination
 import kotlinx.coroutines.runBlocking
-import java.util.*
 
 @Composable
 fun DetailsScreen(
@@ -51,7 +48,7 @@ fun DetailsScreen(
 
             item {
                 Images(pet.image, Modifier.padding(20.dp, 10.dp).size(250.dp))
-                ButtonAdoption()
+                ButtonAdoption(navController, idPet)
                 Card(modifier = Modifier.padding(20.dp, 10.dp)) {
                     DataPet(pet)
                 }
@@ -84,9 +81,9 @@ fun DataPet(pet: Pet) {
 
 
 @Composable
-fun ButtonAdoption() {
+fun ButtonAdoption(navController: NavController, idPet: Int) {
     Button(
-        onClick = {},
+        onClick = {navController.navigate(Destination.ApplyForAdoption.createRoute(idPet))},
         Modifier
             .fillMaxWidth()
             .padding(20.dp, 10.dp)

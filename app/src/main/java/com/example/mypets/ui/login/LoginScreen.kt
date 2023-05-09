@@ -25,7 +25,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.mypets.ui.*
 import com.example.mypets.ui.navigation.Destination
-import com.example.mypets.ui.theme.MyPetsTheme
 import kotlinx.coroutines.launch
 
 

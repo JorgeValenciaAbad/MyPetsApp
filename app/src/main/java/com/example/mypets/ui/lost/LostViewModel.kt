@@ -28,9 +28,12 @@ class LostViewModel @Inject constructor(@ApplicationContext private val context:
     private val _petsMissing = MutableLiveData<List<PetMiss>>()
     val petsMissing: LiveData<List<PetMiss>> = _petsMissing
 
-    fun onChangeTextField (image: Uri, text: String){
+    fun onChangeTextField (image: Uri){
         _image.value = image
+        _missEnable.value = image!= null && Functions.isValidSummary(_summary.value.toString())
+    }    fun onChangeTextField ( text: String){
         _summary.value = text
+        _missEnable.value = _image.value != null && Functions.isValidSummary(text)
     }
     suspend fun create (){
         repository.addComplaint(Functions.uriToMultiPartBody(_image.value?.let {

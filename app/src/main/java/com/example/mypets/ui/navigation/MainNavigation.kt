@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.mypets.ui.app.AppScreen
+import com.example.mypets.ui.apply_adoption.FormScreen
 import com.example.mypets.ui.details.DetailsScreen
 import com.example.mypets.ui.lost.ListPetsMissingScreen
 import com.example.mypets.ui.lost.LostScreen
@@ -33,6 +34,14 @@ fun NavigationHostMain(navController: NavHostController) {
             val pet = it.arguments?.getString("id")
             if (pet!= null){
                 DetailsScreen(navController = navController, pet.toString().toInt() )
+            }else {
+                PetsScreen(navController = navController)
+            }
+        }
+        composable(route = Destination.ApplyForAdoption.route){
+            val pet = it.arguments?.getString("id")
+            if (pet!= null){
+                FormScreen (navController = navController, pet.toString().toInt() )
             }else {
                 PetsScreen(navController = navController)
             }

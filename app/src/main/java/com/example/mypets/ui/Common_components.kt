@@ -32,6 +32,7 @@ import coil.compose.AsyncImage
 import com.example.mypets.R
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.domain.model.PetMiss
+import com.example.mypets.ui.apply_adoption.ApplyAdoptionViewModel
 import com.example.mypets.ui.navigation.Destination
 import com.example.mypets.ui.pet.PetViewModel
 import com.example.mypets.ui.profile.ProfileViewModel
@@ -64,6 +65,7 @@ fun Images(imageName: String, modifier: Modifier) {
         alignment = Alignment.Center
     )
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ItemList(navController: NavController, pet: Pet) {
@@ -108,19 +110,23 @@ fun ItemList(navController: NavController, pet: Pet) {
 }
 
 @Composable
-fun ItemMiss(petMiss: PetMiss){
-    Card( modifier = Modifier
-        .fillMaxWidth()
-        .padding(10.dp)) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            Images(imageName = petMiss.image, modifier = Modifier
-                .size(150.dp)
-                .padding(20.dp)
-                .clip(RoundedCornerShape(10.dp)) )
-            Text(text = petMiss.summary)
+fun ItemMiss(petMiss: PetMiss) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(20.dp)
+    ) {
+        Column(
+            verticalArrangement = Arrangement.SpaceAround,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Images(
+                imageName = petMiss.image, modifier = Modifier
+                    .size(250.dp)
+                    .padding(20.dp)
+                    .clip(RoundedCornerShape(10.dp))
+            )
+            Text(text = petMiss.summary, modifier = Modifier.padding(40.dp))
         }
 
     }
@@ -301,6 +307,24 @@ fun Summary(summary: String, onTextFieldChanged: (String) -> Unit) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TextFieldForm(label: String, text: String, onTextFieldChanged: (String) -> Unit) {
+    TextField(
+        value = text,
+        onValueChange = onTextFieldChanged,
+        maxLines = 10,
+        label = { Text(text = label) },
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(20.dp)
+            .clip(RoundedCornerShape(10.dp)),
+        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground)
+    )
+}
+
+
 @Composable
 fun ArrowBackIcon(navController: NavController) {
     IconButton(
@@ -405,18 +429,18 @@ fun TitleScreen(top: String, down: String) {
 }
 
 
-
 @Composable
 fun TitleScreen(text: String) {
-    Column(Modifier.padding(20.dp)) {
-        Text(
-            text = text,
-            fontWeight = FontWeight.Light,
-            fontSize = 20.sp,
-            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-        )
+    Text(
+        text = text,
+        fontWeight = FontWeight.Light,
+        fontSize = 20.sp,
+        color = if (isSystemInDarkTheme()) Color.White else Color.Black,
+        modifier = Modifier
+            .padding(20.dp)
+            .fillMaxWidth()
+    )
 
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -434,4 +458,60 @@ fun TopBarArrowBack(navController: NavController, title: String) {
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
     )
+}
+
+@Composable
+fun Subtitle(text: String) {
+    Text(
+        text = text,
+        fontSize = 16.sp,
+        color = if (isSystemInDarkTheme()) Color.White else Color.Black,
+        modifier = Modifier
+            .padding(20.dp)
+            .fillMaxWidth(),
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
+fun RadioButtonBoolean(value: Boolean, viewModel: ApplyAdoptionViewModel, code: Int) {
+    var flag = value
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(
+                selected = value,
+                onClick = {
+                    when (code) {
+                        1 -> {
+                            viewModel.onKidsChange(true)
+                        }
+
+                        2 -> {
+                            viewModel.onPetsChange(true)
+                        }
+                    }
+                })
+            Text(text = "Yes")
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            RadioButton(
+                selected = !value,
+                onClick = {
+                    when (code) {
+                        1 -> {
+                            viewModel.onKidsChange(false)
+                        }
+
+                        2 -> {
+                            viewModel.onPetsChange(false)
+                        }
+                    }
+                })
+            Text(text = "No")
+        }
+
+    }
 }

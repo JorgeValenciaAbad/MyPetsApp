@@ -12,4 +12,8 @@ sealed class Destination(val route : String) {
     object Details : Destination("details/{id}"){
         fun createRoute (id: Int) = "details/${id}"
     }
+
+    object ApplyForAdoption : Destination("apply/{id}"){
+        fun createRoute (id: Int) = "apply/${id}"
+    }
 }

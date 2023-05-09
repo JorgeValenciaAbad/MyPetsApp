@@ -1,6 +1,7 @@
 package com.example.mypets.ui.lost
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -34,20 +35,26 @@ fun ListPetsMissingScreen(
 
     Column(verticalArrangement = Arrangement.SpaceBetween) {
         TopBarArrowBack(navController = navController, title = "Pet's Missing")
-        LazyColumn(horizontalAlignment = Alignment.CenterHorizontally,verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
-            petsMissing.forEach{petMiss ->
-                item { ItemMiss(petMiss = petMiss ) }
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            petsMissing.forEach { petMiss ->
+                item { ItemMiss(petMiss = petMiss) }
 
-            }
-            item {
-                Button(
-                    onClick = {navController.navigate(Destination.Lost.route)},
-                    modifier = Modifier.padding(10.dp)
-                ) {
-                    Text(text = "Complaint")
-                }
             }
         }
-    }
+        Box(contentAlignment = Alignment.BottomCenter){
+            Button(
+                onClick = { navController.navigate(Destination.Lost.route) },
+                modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(text = "Complaint")
+            }
+        }
 
+    }
 }

@@ -2,14 +2,13 @@ package com.example.mypets.ui.profile
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mypets.data.MyPetsRepositoryImpl
-import com.example.mypets.util.Functions
 import com.example.mypets.domain.model.User
 import com.example.mypets.util.FileUtils
+import com.example.mypets.util.Functions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -29,9 +28,6 @@ class ProfileViewModel @Inject constructor(@ApplicationContext private val conte
 
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> = _email
-
-//    private val _avatar = MutableLiveData<Uri>()
-//    val avatar: LiveData<Uri> = _avatar
 
     private val _profileEnable = MutableLiveData<Boolean>()
     val profileEnable: LiveData<Boolean> = _profileEnable
