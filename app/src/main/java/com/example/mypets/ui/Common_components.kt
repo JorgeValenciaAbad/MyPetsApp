@@ -37,6 +37,7 @@ import com.example.mypets.ui.navigation.Destination
 import com.example.mypets.ui.pet.PetViewModel
 import com.example.mypets.ui.profile.ProfileViewModel
 import com.example.mypets.util.Constants
+import com.example.mypets.util.Functions
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
@@ -179,7 +180,7 @@ fun UserName(
             .clip(RoundedCornerShape(10.dp)),
         singleLine = true,
 
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
+        colors = TextFieldDefaults.outlinedTextFieldColors(),
         leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "User") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
@@ -208,7 +209,7 @@ fun UserEmail(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Done
         ),
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
+        colors = TextFieldDefaults.outlinedTextFieldColors( ),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
@@ -231,7 +232,7 @@ fun UserPhone(
             .clip(RoundedCornerShape(10.dp)),
         singleLine = true,
 
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
+        colors = TextFieldDefaults.outlinedTextFieldColors(),
         leadingIcon = { Icon(imageVector = Icons.Filled.Phone, contentDescription = "phone") },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
@@ -281,7 +282,7 @@ fun UserPass(
                 }
             }
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground),
+        colors = TextFieldDefaults.outlinedTextFieldColors(),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done
@@ -303,7 +304,7 @@ fun Summary(summary: String, onTextFieldChanged: (String) -> Unit) {
             .fillMaxWidth()
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground)
+        colors = TextFieldDefaults.outlinedTextFieldColors()
     )
 }
 
@@ -314,17 +315,68 @@ fun TextFieldForm(label: String, text: String, onTextFieldChanged: (String) -> U
         value = text,
         onValueChange = onTextFieldChanged,
         maxLines = 10,
+        isError = !Functions.isValidText(text),
         label = { Text(text = label) },
         modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
-        colors = TextFieldDefaults.outlinedTextFieldColors(textColor = MaterialTheme.colorScheme.onBackground)
+        colors = TextFieldDefaults.outlinedTextFieldColors()
     )
 }
 
-
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun IdentificationFieldForm(label: String, text: String, onTextFieldChanged: (String) -> Unit) {
+    TextField(
+        value = text,
+        onValueChange = onTextFieldChanged,
+        maxLines = 10,
+        isError = !Functions.isValidIdentification(text) && !Functions.isValidIdentificationNIE(text),
+        label = { Text(text = label) },
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(20.dp)
+            .clip(RoundedCornerShape(10.dp)),
+        colors = TextFieldDefaults.outlinedTextFieldColors()
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NumberFieldForm(label: String, number: String, onTextFieldChanged: (String) -> Unit) {
+    TextField(
+        value = number,
+        onValueChange = onTextFieldChanged,
+        maxLines = 10,
+        isError = !Functions.isValidNumber(number),
+        label = { Text(text = label) },
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(20.dp)
+            .clip(RoundedCornerShape(10.dp)),
+        colors = TextFieldDefaults.outlinedTextFieldColors()
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddressFieldForm(label: String, text: String, onTextFieldChanged: (String) -> Unit) {
+    TextField(
+        value = text,
+        onValueChange = onTextFieldChanged,
+        maxLines = 10,
+        isError = text.isEmpty(),
+        label = {Text(text = label)},
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(20.dp)
+            .clip(RoundedCornerShape(10.dp)),
+        colors = TextFieldDefaults.outlinedTextFieldColors()
+    )
+}
 @Composable
 fun ArrowBackIcon(navController: NavController) {
     IconButton(
@@ -334,7 +386,8 @@ fun ArrowBackIcon(navController: NavController) {
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "ArrowBack",
-                modifier = Modifier.size(30.dp)
+                modifier = Modifier.size(30.dp),
+                tint =  MaterialTheme.colorScheme.surface
             )
         }
     }
@@ -454,6 +507,7 @@ fun TopBarArrowBack(navController: NavController, title: String) {
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 fontSize = 20.sp,
+                color =  MaterialTheme.colorScheme.surface
             )
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
@@ -475,7 +529,7 @@ fun Subtitle(text: String) {
 
 @Composable
 fun RadioButtonBoolean(value: Boolean, viewModel: ApplyAdoptionViewModel, code: Int) {
-    var flag = value
+
     Row(
         horizontalArrangement = Arrangement.SpaceAround,
         modifier = Modifier.fillMaxWidth()

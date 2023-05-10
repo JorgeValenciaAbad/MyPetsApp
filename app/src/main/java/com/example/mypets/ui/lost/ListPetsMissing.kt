@@ -35,16 +35,6 @@ fun ListPetsMissingScreen(
 
     Column(verticalArrangement = Arrangement.SpaceBetween) {
         TopBarArrowBack(navController = navController, title = "Pet's Missing")
-        LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            petsMissing.forEach { petMiss ->
-                item { ItemMiss(petMiss = petMiss) }
-
-            }
-        }
         Box(contentAlignment = Alignment.BottomCenter){
             Button(
                 onClick = { navController.navigate(Destination.Lost.route) },
@@ -55,6 +45,18 @@ fun ListPetsMissingScreen(
                 Text(text = "Complaint")
             }
         }
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            petsMissing.forEach { petMiss ->
+                item { ItemMiss(petMiss = petMiss) }
+
+
+            }
+        }
+
 
     }
 }

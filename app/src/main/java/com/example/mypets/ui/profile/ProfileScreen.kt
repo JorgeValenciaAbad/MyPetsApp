@@ -126,6 +126,7 @@ fun TopBarProfile(navController: NavController, viewModel: ProfileViewModel){
                 text = "Profile",
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 26.sp,
+                color =  MaterialTheme.colorScheme.surface
             )
         })
 }

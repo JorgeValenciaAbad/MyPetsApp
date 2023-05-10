@@ -108,6 +108,7 @@ fun TopAppBarPet(navController: NavController) {
                 text = "My Pets",
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 26.sp,
+                color =  MaterialTheme.colorScheme.surface
             )
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
