@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mypets.data.MyPetsRepositoryImpl
+import com.example.mypets.domain.model.BaseResponse
+import com.example.mypets.domain.model.RequestAdoption
 import com.example.mypets.util.Functions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -53,6 +55,9 @@ class ApplyAdoptionViewModel @Inject constructor(private val repository: MyPetsR
 
     private val _enableSend = MutableLiveData<Boolean>()
     val enableSend: LiveData<Boolean> = _enableSend
+
+    private val _code = MutableLiveData<BaseResponse>()
+    val code: LiveData<BaseResponse> = _code
 
     fun onNameChange (name: String) {
         _name.value = name
@@ -108,10 +113,27 @@ class ApplyAdoptionViewModel @Inject constructor(private val repository: MyPetsR
     }
 
     private fun verify (){
-       if(Functions.isValidIdentification(_identification.value.toString()) || Functions.isValidIdentificationNIE(_identification.value.toString()))
-           _enableSend.value =  Functions.isValidText(_name.value.toString()) && Functions.isValidText(_secondName.value.toString()) && Functions.isValidText(_region.value.toString()) && Functions.isValidText(_country.value.toString()) && Functions.isValidNumber(_surface.value.toString()) && Functions.isValidText(_typeHome.value.toString()) && !home.value.isNullOrEmpty() && _address.value.toString().length>1
+       if(Functions.isValidIdentification(identification.value.toString()) || Functions.isValidIdentificationNIE(identification.value.toString()))
+           _enableSend.value =  Functions.isValidText(name.value.toString()) && Functions.isValidText(secondName.value.toString()) && Functions.isValidText(region.value.toString()) && Functions.isValidText(country.value.toString()) && Functions.isValidNumber(surface.value.toString()) && Functions.isValidText(typeHome.value.toString()) && !home.value.isNullOrEmpty() && address.value.toString().length>1 && !bornDate.value.toString().isNullOrEmpty()
 
+    }
 
-
+    suspend fun send(){
+       _code.value = repository.adoptionRequest(RequestAdoption(
+            _name.value.toString(),
+            _identification.value.toString(),
+            _secondName.value.toString(),
+            _bornDate.value.toString(),
+            _country.value.toString(),
+            _region.value.toString(),
+            _address.value.toString(),
+            _kids.value.toString().toBoolean(),
+            _pets.value.toString().toBoolean(),
+            _typeHome.value.toString(),
+            _home.value.toString(),
+            _surface.value.toString(),
+            _idPet.value.toString().toInt()
+        )
+       )
     }
 }

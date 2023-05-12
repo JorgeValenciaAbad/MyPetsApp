@@ -3,10 +3,13 @@ package com.example.mypets.data
 import android.util.Log
 import com.example.mypets.data.local.DataStoreManager
 import com.example.mypets.data.remote.MyPetsApi
+import com.example.mypets.domain.model.BaseResponse
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.domain.model.PetMiss
+import com.example.mypets.domain.model.RequestAdoption
 import com.example.mypets.domain.model.User
 import com.example.mypets.domain.repository.PetsRepository
+import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
@@ -76,6 +79,25 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
             val response = myPetsApi.changeAvatar(dataStore.getToken(),image).execute()
             Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
             response.code()
+        }
+    }
+    override suspend fun adoptionRequest(requestAdoption: RequestAdoption): BaseResponse {
+        return withContext(Dispatchers.Default){
+            val response = myPetsApi.adoption(dataStore.getToken(),requestAdoption).execute()
+            if (response.isSuccessful){
+                Log.d("RESPONSE_CODE", response.code().toString())
+                return@withContext response.body()!!
+            }else{
+                val error =
+                    Gson().fromJson(
+                        response.errorBody()!!.charStream(),
+                        BaseResponse::class.java
+                    )
+                Log.d("RESPONSE_CODE", response.code().toString()+" "+ error.subCode)
+
+                return@withContext error
+            }
+
         }
     }
 

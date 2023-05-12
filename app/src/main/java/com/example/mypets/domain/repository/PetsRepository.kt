@@ -1,7 +1,9 @@
 package com.example.mypets.domain.repository
 
+import com.example.mypets.domain.model.BaseResponse
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.domain.model.PetMiss
+import com.example.mypets.domain.model.RequestAdoption
 import com.example.mypets.domain.model.User
 import okhttp3.MultipartBody
 
@@ -19,4 +21,5 @@ interface PetsRepository {
     suspend fun addComplaint(image: MultipartBody.Part, text: String): Int
     suspend fun getComplaint(): List<PetMiss>?
     suspend fun changeAvatar(image: MultipartBody.Part): Int
+    suspend fun adoptionRequest(requestAdoption: RequestAdoption): BaseResponse
 }

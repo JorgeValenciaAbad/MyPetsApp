@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.mypets.R
+import com.example.mypets.domain.model.BaseResponse
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.domain.model.PetMiss
 import com.example.mypets.ui.apply_adoption.ApplyAdoptionViewModel
@@ -463,39 +464,6 @@ fun Suitable(value: Boolean, text: String) {
 
 }
 
-@Composable
-fun TitleScreen(top: String, down: String) {
-    Column(Modifier.padding(20.dp)) {
-        Text(
-            text = top,
-            fontWeight = FontWeight.Light,
-            fontSize = 20.sp,
-            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-        )
-        Text(
-            text = down,
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 26.sp,
-            color = if (isSystemInDarkTheme()) Color.White else Color.Black
-        )
-    }
-}
-
-
-@Composable
-fun TitleScreen(text: String) {
-    Text(
-        text = text,
-        fontWeight = FontWeight.Light,
-        fontSize = 20.sp,
-        color = if (isSystemInDarkTheme()) Color.White else Color.Black,
-        modifier = Modifier
-            .padding(20.dp)
-            .fillMaxWidth()
-    )
-
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarArrowBack(navController: NavController, title: String) {
@@ -567,5 +535,26 @@ fun RadioButtonBoolean(value: Boolean, viewModel: ApplyAdoptionViewModel, code: 
             Text(text = "No")
         }
 
+    }
+}
+@Composable
+fun ErrorDialog(code: BaseResponse) {
+
+    var openDialog by remember { mutableStateOf(code.code > 0) }
+    if (openDialog) {
+        AlertDialog(
+            onDismissRequest = { openDialog = false },
+            title = {
+                Text(text = "Error")
+            },
+            text = {
+                Text(text = code.message)
+            },
+            confirmButton = {
+                TextButton(onClick = { openDialog = false }) {
+                    Text(text = "OK")
+                }
+            }
+        )
     }
 }

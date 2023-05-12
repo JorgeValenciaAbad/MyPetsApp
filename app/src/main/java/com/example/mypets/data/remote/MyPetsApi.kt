@@ -1,7 +1,9 @@
 package com.example.mypets.data.remote
 
+import com.example.mypets.domain.model.BaseResponse
 import com.example.mypets.domain.model.PetMiss
 import com.example.mypets.domain.model.Pet
+import com.example.mypets.domain.model.RequestAdoption
 import com.example.mypets.domain.model.User
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -33,4 +35,6 @@ interface MyPetsApi {
     @Multipart
     @PUT("/api/user/image")
     fun changeAvatar (@Header("Authorization") token: String?, @Part image: MultipartBody.Part): Call<Int>
+    @POST("/api/demand")
+    fun adoption (@Header("Authorization") token: String?, @Body requestAdoption: RequestAdoption): Call<BaseResponse>
 }
