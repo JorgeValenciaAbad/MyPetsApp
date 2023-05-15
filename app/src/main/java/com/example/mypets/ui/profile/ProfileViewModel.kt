@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mypets.data.MyPetsRepositoryImpl
+import com.example.mypets.domain.model.BaseResponse
 import com.example.mypets.domain.model.User
 import com.example.mypets.util.FileUtils
 import com.example.mypets.util.Functions
@@ -32,6 +33,9 @@ class ProfileViewModel @Inject constructor(@ApplicationContext private val conte
     private val _profileEnable = MutableLiveData<Boolean>()
     val profileEnable: LiveData<Boolean> = _profileEnable
 
+    private val _response = MutableLiveData<BaseResponse>()
+    val response: LiveData<BaseResponse> = _response
+
 
     suspend fun getUser() {
         _user.value = repository.getUser()
@@ -45,7 +49,7 @@ class ProfileViewModel @Inject constructor(@ApplicationContext private val conte
         return repository.changeAvatar(Functions.uriToMultiPartBody(FileUtils.getPath(context,uri)))
     }
 
-    fun onLoginChanged(name: String, email: String, phone: String){
+    fun onLoginChanged(name: String, email: String, phone: String?){
 
         _name.value = name
         _email.value = email
@@ -53,12 +57,14 @@ class ProfileViewModel @Inject constructor(@ApplicationContext private val conte
 
          _profileEnable.value = Functions.isValidEmail(email) && Functions.isValidPhone(phone)|| phone.isNullOrEmpty() && Functions.isValidUser(name)
     }
-
     suspend fun update(user: User){
         user.name = name.value.toString()
         user.phone = phone.value.toString()
         user.email = email.value.toString()
 
         repository.updateUser(user)
+    }
+    suspend fun delete(user: User){
+        _response.value = repository.deleteUser(user.id)
     }
 }

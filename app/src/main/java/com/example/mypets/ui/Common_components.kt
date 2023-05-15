@@ -33,7 +33,7 @@ import com.example.mypets.R
 import com.example.mypets.domain.model.BaseResponse
 import com.example.mypets.domain.model.Pet
 import com.example.mypets.domain.model.PetMiss
-import com.example.mypets.ui.apply_adoption.ApplyAdoptionViewModel
+import com.example.mypets.ui.apply_adoption.RequestAdoptionViewModel
 import com.example.mypets.ui.navigation.Destination
 import com.example.mypets.ui.pet.PetViewModel
 import com.example.mypets.ui.profile.ProfileViewModel
@@ -163,14 +163,14 @@ fun LoadingScreen() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserName(
     keyboardController: SoftwareKeyboardController?,
     username: String,
     onTextFieldChanged: (String) -> Unit
 ) {
-    TextField(
+    OutlinedTextField(
         value = username,
         onValueChange = onTextFieldChanged,
         label = { Text(text = "Username") },
@@ -181,21 +181,20 @@ fun UserName(
             .clip(RoundedCornerShape(10.dp)),
         singleLine = true,
 
-        colors = TextFieldDefaults.outlinedTextFieldColors(),
         leadingIcon = { Icon(imageVector = Icons.Filled.Person, contentDescription = "User") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserEmail(
     keyboardController: SoftwareKeyboardController?,
     email: String,
     onTextFieldChanged: (String) -> Unit
 ) {
-    TextField(
+    OutlinedTextField(
         value = email,
         onValueChange = onTextFieldChanged,
         label = { Text(text = "Email") },
@@ -210,20 +209,20 @@ fun UserEmail(
             keyboardType = KeyboardType.Email,
             imeAction = ImeAction.Done
         ),
-        colors = TextFieldDefaults.outlinedTextFieldColors( ),
+        colors = OutlinedTextFieldDefaults.colors(),
         keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
     )
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserPhone(
     keyboardController: SoftwareKeyboardController?,
-    username: String,
+    phone: String?,
     onTextFieldChanged: (String) -> Unit
 ) {
-    TextField(
-        value = username,
+    OutlinedTextField(
+        value = if (phone.isNullOrEmpty()) "" else phone,
         onValueChange = onTextFieldChanged,
         label = { Text(text = "Phone") },
         modifier = Modifier
@@ -232,8 +231,6 @@ fun UserPhone(
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
         singleLine = true,
-
-        colors = TextFieldDefaults.outlinedTextFieldColors(),
         leadingIcon = { Icon(imageVector = Icons.Filled.Phone, contentDescription = "phone") },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Number,
@@ -244,7 +241,7 @@ fun UserPhone(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun UserPass(
     keyboardController: SoftwareKeyboardController?,
@@ -255,7 +252,7 @@ fun UserPass(
 
     var isPasswordVisible by remember { mutableStateOf(false) }
 
-    TextField(
+    OutlinedTextField(
         value = password,
         onValueChange = onTextFieldChanged,
         modifier = Modifier
@@ -283,7 +280,6 @@ fun UserPass(
                 }
             }
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Password,
             imeAction = ImeAction.Done
@@ -292,10 +288,9 @@ fun UserPass(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Summary(summary: String, onTextFieldChanged: (String) -> Unit) {
-    TextField(
+    OutlinedTextField(
         value = summary,
         onValueChange = onTextFieldChanged,
         maxLines = 10,
@@ -305,14 +300,12 @@ fun Summary(summary: String, onTextFieldChanged: (String) -> Unit) {
             .fillMaxWidth()
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
-        colors = TextFieldDefaults.outlinedTextFieldColors()
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldForm(label: String, text: String, onTextFieldChanged: (String) -> Unit) {
-    TextField(
+    OutlinedTextField(
         value = text,
         onValueChange = onTextFieldChanged,
         maxLines = 10,
@@ -323,31 +316,27 @@ fun TextFieldForm(label: String, text: String, onTextFieldChanged: (String) -> U
             .fillMaxWidth()
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
-        colors = TextFieldDefaults.outlinedTextFieldColors()
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun IdentificationFieldForm(label: String, text: String, onTextFieldChanged: (String) -> Unit) {
-    TextField(
+    OutlinedTextField(
         value = text,
         onValueChange = onTextFieldChanged,
         maxLines = 10,
-        isError = !Functions.isValidIdentification(text) && !Functions.isValidIdentificationNIE(text),
+        isError = !Functions.isValidIdentification(text) && !Functions.isValidIdentificationNIE(text) && !Functions.isValidPassport(text) && !Functions.isValidBrp(text),
         label = { Text(text = label) },
         modifier = Modifier
             .wrapContentHeight()
             .fillMaxWidth()
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
-        colors = TextFieldDefaults.outlinedTextFieldColors()
     )
 }
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NumberFieldForm(label: String, number: String, onTextFieldChanged: (String) -> Unit) {
-    TextField(
+    OutlinedTextField(
         value = number,
         onValueChange = onTextFieldChanged,
         maxLines = 10,
@@ -358,13 +347,12 @@ fun NumberFieldForm(label: String, number: String, onTextFieldChanged: (String) 
             .fillMaxWidth()
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
-        colors = TextFieldDefaults.outlinedTextFieldColors()
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
     )
 }
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddressFieldForm(label: String, text: String, onTextFieldChanged: (String) -> Unit) {
-    TextField(
+    OutlinedTextField(
         value = text,
         onValueChange = onTextFieldChanged,
         maxLines = 10,
@@ -375,7 +363,6 @@ fun AddressFieldForm(label: String, text: String, onTextFieldChanged: (String) -
             .fillMaxWidth()
             .padding(20.dp)
             .clip(RoundedCornerShape(10.dp)),
-        colors = TextFieldDefaults.outlinedTextFieldColors()
     )
 }
 @Composable
@@ -496,7 +483,7 @@ fun Subtitle(text: String) {
 }
 
 @Composable
-fun RadioButtonBoolean(value: Boolean, viewModel: ApplyAdoptionViewModel, code: Int) {
+fun RadioButtonBoolean(value: Boolean, viewModel: RequestAdoptionViewModel, code: Int) {
 
     Row(
         horizontalArrangement = Arrangement.SpaceAround,

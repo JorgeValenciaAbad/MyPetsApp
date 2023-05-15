@@ -15,9 +15,13 @@ object Functions {
     fun isValidSummary(summary: String): Boolean = summary.length > 100
     fun isValidText(text: String): Boolean = text.length > 1 && Constants.patternText.matcher(text).matches()
     fun isValidNumber(number: String): Boolean =  Constants.patternNumber.matcher(number).matches()
-    fun isValidPhone(phone: String): Boolean = Constants.patternPhone.matcher(phone).matches()
+    fun isValidPhone(phone: String?): Boolean = Constants.patternPhone.matcher(phone).matches()
     fun isValidIdentification(identification: String): Boolean = Constants.patternIdentification.matcher(identification).matches()
     fun isValidIdentificationNIE(identification: String): Boolean = Constants.patternNIE.matcher(identification).matches()
+    fun isValidPassport(identification: String): Boolean =  Constants.patternPassport.matcher(identification).matches()
+    fun isValidBrp(identification: String): Boolean =  Constants.patternBrp.matcher(identification).matches()
+
+
     fun toDate(dateMillis: Long?): String{
         val date = dateMillis?.let { Date(it) }
         val format = SimpleDateFormat("yyyy-MM-dd")

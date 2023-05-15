@@ -23,12 +23,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.mypets.domain.model.BaseResponse
 import com.example.mypets.domain.model.User
 import com.example.mypets.ui.*
+import com.example.mypets.ui.navigation.Destination
 import kotlinx.coroutines.runBlocking
 
 @Composable
-fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel= hiltViewModel()) {
+fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel = hiltViewModel()) {
 
     runBlocking {
         viewModel.getUser()
@@ -36,33 +38,54 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel=
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uri -> runBlocking {
-            uri?.let { viewModel.changeAvatar(uri) }
-            viewModel.getUser()
-        } }
+        onResult = { uri ->
+            runBlocking {
+                uri?.let { viewModel.changeAvatar(uri) }
+                viewModel.getUser()
+            }
+        }
     )
-
+    val response: BaseResponse? by viewModel.response.observeAsState(initial = null)
     val user by viewModel.user.observeAsState(initial = User())
     Column {
         TopBarProfile(navController = navController, viewModel = viewModel)
         LazyColumn(Modifier.fillMaxSize()) {
-            item{
-                Column (
+            item {
+                Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Images(imageName = user.image, modifier = Modifier
-                        .padding(10.dp)
-                        .size(100.dp)
-                        .clip(CircleShape)
-                        .clickable {
-                            singlePhotoPickerLauncher.launch(
-                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                        ) },)
+                    Images(
+                        imageName = user.image,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(100.dp)
+                            .clip(CircleShape)
+                            .clickable {
+                                singlePhotoPickerLauncher.launch(
+                                    PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                )
+                            },
+                    )
                     DataUser(user = user, viewModel)
                 }
-                DeleteUser(navController = navController, viewModel = viewModel )
+                Button(
+                    onClick = {
+                        runBlocking {
+                            viewModel.delete(user)
+                            if (response?.code == 0) navController.navigate(Destination.MainScreen.route)
+                        }
+                    }, modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = "Delete User")
+                }
             }
 
         }
@@ -72,12 +95,12 @@ fun ProfileScreen(navController: NavHostController, viewModel: ProfileViewModel=
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun DataUser(user: User, viewModel: ProfileViewModel){
+fun DataUser(user: User, viewModel: ProfileViewModel) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
     val name: String by viewModel.name.observeAsState(initial = user.name)
     val email: String by viewModel.email.observeAsState(initial = user.email.toString())
-    val phone: String by viewModel.phone.observeAsState(initial = user.phone)
+    val phone: String? by viewModel.phone.observeAsState(initial = user.phone)
     val profileEnable: Boolean by viewModel.profileEnable.observeAsState(initial = false)
     Column {
 
@@ -105,18 +128,21 @@ fun DataUser(user: User, viewModel: ProfileViewModel){
                 it
             )
         }
-        Button(onClick = { runBlocking { viewModel.update(user) }}, modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp), enabled = profileEnable ){
-            Text(text= "Update")
+        Button(
+            onClick = { runBlocking { viewModel.update(user) } }, modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp), enabled = profileEnable
+        ) {
+            Text(text = "Update")
         }
 
     }
 
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarProfile(navController: NavController, viewModel: ProfileViewModel){
+fun TopBarProfile(navController: NavController, viewModel: ProfileViewModel) {
     TopAppBar(
         navigationIcon = { ArrowBackIcon(navController) },
         actions = { LogoutIcon(navController, viewModel) },
@@ -126,22 +152,8 @@ fun TopBarProfile(navController: NavController, viewModel: ProfileViewModel){
                 text = "Profile",
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 26.sp,
-                color =  MaterialTheme.colorScheme.surface
+                color = MaterialTheme.colorScheme.surface
             )
         })
 }
 
-
-@Composable
-fun DeleteUser(navController: NavController, viewModel: ProfileViewModel){
-    Button(onClick = { viewModel}, modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 20.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Red,
-            contentColor = Color.White
-        )
-        ){
-        Text(text = "Delete User")
-    }
-}

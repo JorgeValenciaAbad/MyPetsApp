@@ -4,11 +4,11 @@ import java.io.Serializable
 
 class User: Serializable {
 
-    private var id : Int = 0
+    var id : Int = 0
     var name: String = ""
     private var pass: String? = ""
     var email: String? = ""
-    var phone: String = ""
+    var phone: String? = null
     var image: String = ""
 
 
@@ -34,6 +34,8 @@ class User: Serializable {
         this.name = ""
         this.pass = ""
         this.email = ""
+        this.phone = null
+        this.image = ""
     }
     override fun toString(): String {
         return "User(name='$name', phone=$phone, email='$email')"

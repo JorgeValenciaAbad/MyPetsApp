@@ -11,7 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class ApplyAdoptionViewModel @Inject constructor(private val repository: MyPetsRepositoryImpl) :
+class RequestAdoptionViewModel @Inject constructor(private val repository: MyPetsRepositoryImpl) :
     ViewModel() {
 
 

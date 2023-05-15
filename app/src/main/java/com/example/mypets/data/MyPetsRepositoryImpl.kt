@@ -18,8 +18,10 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
     override suspend fun login(email: String, pass: String):Int{
         return withContext(Dispatchers.Default){
             val response = myPetsApi.login(User(email, pass)).execute()
-            dataStore.saveToken(response.body().toString())
             Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
+            if (response.isSuccessful){
+                dataStore.saveToken(response.body().toString())
+            }
             response.code()
         }
 
@@ -37,6 +39,7 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
         return withContext(Dispatchers.Default){
             val response = myPetsApi.getPets(dataStore.getToken()).execute()
             Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
+
             response.body()
         }
 
@@ -50,7 +53,7 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
         }
     }
 
-    override suspend fun updateUser(user: User): User? {
+    override suspend fun updateUser(user: User): BaseResponse? {
         return withContext(Dispatchers.Default){
             val response = myPetsApi.updateUser(dataStore.getToken(),user).execute()
             Log.d("RESPONSE_CODE", response.code().toString()+" "+response.message())
@@ -101,8 +104,14 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
         }
     }
 
-    override suspend fun adoption(id: Int): Int {
-        return 0
+    override suspend fun deleteUser(id: Int): BaseResponse? {
+        return withContext(Dispatchers.Default){
+            val response = myPetsApi.deleteUser(dataStore.getToken(), id).execute()
+            if (response.isSuccessful){
+                dataStore.saveToken("")
+            }
+            response.body()
+        }
     }
 
     override suspend fun getUser(): User? {
