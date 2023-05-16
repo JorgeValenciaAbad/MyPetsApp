@@ -39,4 +39,6 @@ interface MyPetsApi {
     fun adoption (@Header("Authorization") token: String?, @Body requestAdoption: RequestAdoption): Call<BaseResponse>
     @DELETE("/api/user/{id}")
     fun deleteUser (@Header("Authorization") token: String?, @Path("id") id: Int): Call<BaseResponse>
+    @POST("api/valid/{id}")
+    fun validRequest(@Header("Authorization") token: String?, @Path("id") id: Int): Call<Boolean>
 }

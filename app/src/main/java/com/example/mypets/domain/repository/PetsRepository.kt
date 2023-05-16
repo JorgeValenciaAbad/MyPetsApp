@@ -22,4 +22,5 @@ interface PetsRepository {
     suspend fun getComplaint(): List<PetMiss>?
     suspend fun changeAvatar(image: MultipartBody.Part): Int
     suspend fun adoptionRequest(requestAdoption: RequestAdoption): BaseResponse
+    suspend fun validRequest(id:Int): Boolean?
 }

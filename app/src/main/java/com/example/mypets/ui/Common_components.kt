@@ -481,7 +481,15 @@ fun Subtitle(text: String) {
         textAlign = TextAlign.Center
     )
 }
-
+@Composable
+fun TextRadioButton(text: String) {
+    Text(
+        text = text,
+        fontSize = 16.sp,
+        color = if (isSystemInDarkTheme()) Color.White else Color.Black,
+        textAlign = TextAlign.Center
+    )
+}
 @Composable
 fun RadioButtonBoolean(value: Boolean, viewModel: RequestAdoptionViewModel, code: Int) {
 
@@ -503,7 +511,7 @@ fun RadioButtonBoolean(value: Boolean, viewModel: RequestAdoptionViewModel, code
                         }
                     }
                 })
-            Text(text = "Yes")
+            TextRadioButton(text = "Yes")
         }
         Row(verticalAlignment = Alignment.CenterVertically) {
             RadioButton(
@@ -519,7 +527,7 @@ fun RadioButtonBoolean(value: Boolean, viewModel: RequestAdoptionViewModel, code
                         }
                     }
                 })
-            Text(text = "No")
+            TextRadioButton(text = "No")
         }
 
     }

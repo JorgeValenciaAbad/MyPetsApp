@@ -17,7 +17,7 @@ class PetViewModel @Inject constructor(private val repository: MyPetsRepositoryI
     private val _type = MutableLiveData<List<String>>()
     var type: LiveData<List<String>> = _type
 
-    suspend fun getData ( ){
+    suspend fun getData (){
         _pets.value = repository.getPets()
         _type.value = repository.getTypes()
     }

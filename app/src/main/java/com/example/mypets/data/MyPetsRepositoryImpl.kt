@@ -104,6 +104,16 @@ class MyPetsRepositoryImpl (private val myPetsApi: MyPetsApi, private val dataSt
         }
     }
 
+    override suspend fun validRequest(id: Int): Boolean? {
+        return withContext(Dispatchers.Default){
+            val response = myPetsApi.validRequest(dataStore.getToken(), id).execute()
+            if (response.isSuccessful){
+                return@withContext response.body()
+            }
+            return@withContext false
+        }
+    }
+
     override suspend fun deleteUser(id: Int): BaseResponse? {
         return withContext(Dispatchers.Default){
             val response = myPetsApi.deleteUser(dataStore.getToken(), id).execute()

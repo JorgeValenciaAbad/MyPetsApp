@@ -1,5 +1,6 @@
 package com.example.mypets.ui.details
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,13 +13,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.example.mypets.R
 import com.example.mypets.domain.model.Pet
@@ -27,18 +31,22 @@ import com.example.mypets.ui.InfoItem
 import com.example.mypets.ui.Suitable
 import com.example.mypets.ui.TopBarArrowBack
 import com.example.mypets.ui.navigation.Destination
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
 fun DetailsScreen(
     navController: NavController,
     idPet: Int,
     viewModel: DetailsViewModel = hiltViewModel()
 ) {
-    runBlocking {
-        viewModel.getPet(idPet)
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    LaunchedEffect(lifecycle){
+        viewModel.getData(idPet)
     }
+
     val pet by viewModel.pet.observeAsState(initial = Pet())
+    val enable by viewModel.enableRequest.observeAsState(initial = false)
     Column(verticalArrangement = Arrangement.SpaceBetween) {
         TopBarArrowBack(navController = navController, title = pet.name)
         LazyColumn(
@@ -51,7 +59,10 @@ fun DetailsScreen(
                     Modifier
                         .padding(20.dp, 10.dp)
                         .size(250.dp))
-                ButtonAdoption(navController, idPet)
+                if (!enable){
+                    ButtonAdoption(navController, idPet)
+                }
+
                 Card(modifier = Modifier.padding(20.dp, 10.dp)) {
                     DataPet(pet)
                 }

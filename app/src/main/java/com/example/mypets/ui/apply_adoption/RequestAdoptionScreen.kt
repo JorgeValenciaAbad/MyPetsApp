@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -33,6 +34,7 @@ import com.example.mypets.ui.navigation.Destination
 import com.example.mypets.util.Functions
 import kotlinx.coroutines.runBlocking
 import com.example.mypets.ui.NumberFieldForm
+import com.example.mypets.ui.TextRadioButton
 
 @Composable
 fun FormScreen(
@@ -97,13 +99,13 @@ fun FormScreen(
                         RadioButton(
                             selected = home == "Renting",
                             onClick = { viewModel.onHomeChange("Renting") })
-                        Text(text = "Renting")
+                        TextRadioButton(text = "Renting")
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         RadioButton(
                             selected = home == "Owner",
                             onClick = { viewModel.onHomeChange("Owner") })
-                        Text(text = "Owner")
+                        TextRadioButton(text = "Owner")
                     }
 
                 }
@@ -207,39 +209,6 @@ fun BornDate(viewModel: RequestAdoptionViewModel, bornDate: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelectCountry(country: String, viewModel: RequestAdoptionViewModel) {
-//    val options = listOf("Spain", "England")
-//    var showMenu by remember { mutableStateOf(false) }
-//    ExposedDropdownMenuBox(
-//        expanded = showMenu,
-//        onExpandedChange = { showMenu = !showMenu },
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(20.dp)
-//        ){
-//            TextField(
-//                value = country,
-//                onValueChange = {},
-//                trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = showMenu)},
-//                readOnly = true,
-//                colors = ExposedDropdownMenuDefaults.textFieldColors(),
-//                modifier = Modifier.clickable { showMenu = true }
-//            )
-//            ExposedDropdownMenu(
-//                expanded = showMenu,
-//                onDismissRequest = { showMenu = false }
-//            ){
-//                options.forEach { option ->
-//                    DropdownMenuItem(
-//                        text ={Text(text = option)} ,
-//                        onClick = {
-//                            viewModel.onCountryChange(option)
-//                            showMenu = false
-//                        },
-//                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-//                        )
-//                }
-//            }
-//        }
     val options = listOf("Spain", "England")
     var expanded by remember { mutableStateOf(false) }
 
@@ -256,6 +225,7 @@ fun SelectCountry(country: String, viewModel: RequestAdoptionViewModel) {
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(10.dp)),
             readOnly = true,
+            isError = country.isNullOrEmpty(),
             value = country,
             onValueChange = {},
             label = { Text("Select Country") },
@@ -274,6 +244,7 @@ fun SelectCountry(country: String, viewModel: RequestAdoptionViewModel) {
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                    colors = MenuDefaults.itemColors(textColor = Color.Black)
                 )
             }
         }
