@@ -15,9 +15,9 @@ object Constants {
     private const val BRP_REGEX = "^([A-PR-WY-Z]{1}[0-9]{2}[0-9A-HJKMNP-Z]{2}[0-9]{4})$"
 
 
-    const val BASE_URL = "http://192.168.1.106:5002"
+    //const val BASE_URL = "http://192.168.1.106:5002"
     //const val BASE_URL = "http://192.168.1.102:5002"
-    //const val BASE_URL = "http://192.168.1.14:5002"
+    const val BASE_URL = "http://192.168.1.13:5002"
 
     const val EMPTY_STRING = ""
 
